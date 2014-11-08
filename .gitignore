@@ -33,3 +33,8 @@ nosetests.xml
 .mr.developer.cfg
 .project
 .pydevproject
+
+# Packer build log
+packer/build-spark-amis.log
+packer/spark-ami-artifact-ids.csv
+
