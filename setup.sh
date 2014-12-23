@@ -80,13 +80,15 @@ while [ "e$TODO" != "e" ] && [ $TRIES -lt 4 ] ; do
 done
 
 echo "RSYNC'ing /root/spark-ec2 to other cluster nodes..."
-for node in $SLAVES $OTHER_MASTERS; do
-  echo $node
-  rsync -e "ssh $SSH_OPTS" -az /root/spark-ec2 $node:/root &
-  scp $SSH_OPTS ~/.ssh/id_rsa $node:.ssh &
-  sleep 0.3
-done
-wait
+parallel -q rsync -az -e "ssh $SSH_OPTS" /root/spark-ec2 {}:/root ::: $SLAVES $OTHER_MASTERS
+parallel scp $SSH_OPTS ~/.ssh/id_rsa {}:.ssh ::: $SLAVES $OTHER_MASTERS
+# for node in $SLAVES $OTHER_MASTERS; do
+#   echo $node
+  # rsync -e "ssh $SSH_OPTS" -az /root/spark-ec2 $node:/root &
+  # scp $SSH_OPTS ~/.ssh/id_rsa $node:.ssh &
+  # sleep 0.3
+# done
+# wait
 
 # NOTE: We need to rsync spark-ec2 before we can run setup-slave.sh
 # on other cluster nodes
