@@ -80,7 +80,7 @@ while [ "e$TODO" != "e" ] && [ $TRIES -lt 4 ] ; do
 done
 
 echo "RSYNC'ing /root/spark-ec2 to other cluster nodes..."
-parallel -q rsync -az -e "ssh $SSH_OPTS" /root/spark-ec2 {}:/root ::: $SLAVES $OTHER_MASTERS
+parallel --quote rsync -e "ssh $SSH_OPTS" -az /root/spark-ec2 {}:/root ::: $SLAVES $OTHER_MASTERS
 parallel scp $SSH_OPTS ~/.ssh/id_rsa {}:.ssh ::: $SLAVES $OTHER_MASTERS
 # for node in $SLAVES $OTHER_MASTERS; do
 #   echo $node
