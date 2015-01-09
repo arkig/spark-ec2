@@ -2,56 +2,24 @@
   "variables": {
     "aws_access_key": "{{env `AWS_ACCESS_KEY_ID`}}",
     "aws_secret_key": "{{env `AWS_SECRET_ACCESS_KEY`}}",
-    "base_ebs_hvm_ami": "ami-b66ed3de",
-    "base_ebs_pv_ami": "ami-246ed34c"
+    "base_ebs_hvm_ami": "ami-b3523089",
+    "base_ebs_pv_ami": "ami-ef5133d5"
   },
 
   "builders": [
     {
-      "name": "spark:base:us-east-1:ebs:hvm",
+      "name": "spark:arkbase:ap-southeast-2:ebs:hvm",
       "type": "amazon-ebs",
       "access_key": "{{user `aws_access_key`}}",
       "secret_key": "{{user `aws_secret_key`}}",
-      "region": "us-east-1",
+      "region": "ap-southeast-2",
       "source_ami": "{{user `base_ebs_hvm_ami`}}",
       "instance_type": "m3.medium",
-      "ssh_username": "ec2-user",
-      "ami_name": "Spark Base HVM {{timestamp}}",
+      "spot_price": "0.012",
+      "ssh_username": "root",
+      "ami_name": "Spark Ark Base HVM {{timestamp}}",
       "ami_description": "Spark Base HVM AMI",
-      "ami_groups": ["all"],
-      "ami_virtualization_type": "hvm",
-      "ami_regions": [
-        "ap-northeast-1",
-        "ap-southeast-1",
-        "ap-southeast-2",
-        "eu-west-1",
-        "sa-east-1",
-        "us-west-1",
-        "us-west-2"
-      ]
-    },
-    {
-      "name": "spark:base:us-east-1:ebs:pv",
-      "type": "amazon-ebs",
-      "access_key": "{{user `aws_access_key`}}",
-      "secret_key": "{{user `aws_secret_key`}}",
-      "region": "us-east-1",
-      "source_ami": "{{user `base_ebs_pv_ami`}}",
-      "instance_type": "m3.medium",
-      "ssh_username": "ec2-user",
-      "ami_name": "Spark Base PV {{timestamp}}",
-      "ami_description": "Spark Base PV AMI",
-      "ami_groups": ["all"],
-      "ami_virtualization_type": "paravirtual",
-      "ami_regions": [
-        "ap-northeast-1",
-        "ap-southeast-1",
-        "ap-southeast-2",
-        "eu-west-1",
-        "sa-east-1",
-        "us-west-1",
-        "us-west-2"
-      ]
+      "ami_virtualization_type": "hvm"
     }
   ],
 
@@ -60,10 +28,16 @@
       "type": "shell",
       "execute_command": "chmod +x {{ .Path }}; {{ .Vars }} sudo -E sh -x '{{ .Path }}'",
       "scripts": [
+        "./upgrade-centos.sh",
         "./enable-root-login.sh",
         "./tools-setup.sh",
         "./python-setup.sh",
-        "../create_image.sh"
+        "./java-setup.sh",
+        "./setup-mounts.sh",
+        "./hadoop-setup.sh",
+        "./R-setup.sh",
+        "./vw-setup.sh",
+        "./extras-setup.sh"
       ],
       "pause_before": "10s"
     }
