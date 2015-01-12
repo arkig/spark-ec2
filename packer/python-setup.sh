@@ -5,11 +5,10 @@
 # See comments in http://bicofino.io/blog/2014/01/16/installing-python-2-dot-7-6-on-centos-6-dot-5/
 # Also relevant, but can't se this working: http://digiactive.com.au/blog/2013/12/28/setting-up-python-2-dot-7-on-centos-6-dot-4-the-really-easy-way/
 
-sudo yum groupinstall -y "Development tools"
-sudo yum install -y zlib-devel bzip2-devel openssl-devel ncurses-devel sqlite-devel readline-devel tk-devel gdbm-devel db4-devel libpcap-devel xz-devel
+# Assumed that various dev tools are already installed
 
 # For scipy optimisations
-sudo yum install -y gcc gcc-gfortran gcc-c++ blas-devel lapack-devel atlas-devel
+sudo yum install -y gcc-gfortran blas-devel lapack-devel atlas-devel
 
 # Already installed by now
 #sudo yum install -y libgfortran

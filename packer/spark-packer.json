@@ -31,6 +31,8 @@
         "./upgrade-centos.sh",
         "./enable-root-login.sh",
         "./tools-setup.sh",
+        "./firewall-setup.sh",
+        "./ganglia-setup.sh",
         "./python-setup.sh",
         "./java-setup.sh",
         "./setup-mounts.sh",

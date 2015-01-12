@@ -11,6 +11,9 @@ cd /tmp
 sudo wget http://download.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
 sudo rpm -ivh epel-release-6-8.noarch.rpm
 
+# Security udpates only
+sudo yum update -y --security
+
 # Seems not to be present on CentOS AMI
 # Will create /etc/cloud/cloud.cfg etc.
 yum install -y cloud-init

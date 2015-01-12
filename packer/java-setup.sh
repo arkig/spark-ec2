@@ -8,8 +8,6 @@
 #sudo debuginfo-install -q -y glibc
 
 
-# TODO move elsewhere once run
-echo "export PS1=\"\\u@\\h \\W]\\$ \"" >> ~/.bash_profile
 
 
 JAVA_VERSION="1.7.0"

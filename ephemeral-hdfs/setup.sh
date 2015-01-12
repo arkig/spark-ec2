@@ -24,6 +24,8 @@ if [ -f "$NAMENODE_DIR/current/VERSION" ] && [ -f "$NAMENODE_DIR/current/fsimage
 else
   echo "Formatting ephemeral HDFS namenode..."
   $EPHEMERAL_HDFS/bin/hadoop namenode -format
+  #TODO: DEPRECATED: Use of this script to execute hdfs command is deprecated.
+  #Instead use the hdfs command for it.
 fi
 
 echo "Starting ephemeral HDFS..."

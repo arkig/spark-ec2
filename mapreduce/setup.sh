@@ -8,4 +8,11 @@ done
 wait
 
 chown hadoop:hadoop /mnt/mapreduce -R
+
+#TODO
+#Pseudo-terminal will not be allocated because stdin is not a terminal.
+#chown: invalid user: `hadoop:hadoop'
+#chown: invalid user: `hadoop:hadoop'
+
+
 /root/spark-ec2/copy-dir $MAPREDUCE/conf

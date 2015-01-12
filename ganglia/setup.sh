@@ -18,3 +18,31 @@ ln -s /usr/share/ganglia/conf/default.json /var/lib/ganglia/conf/
 
 # Start http server to serve ganglia
 /etc/init.d/httpd restart
+
+
+# ganglia version 3. something is running, but conf appeas to be for 2.5?
+
+#Setting up ganglia
+#RSYNC'ing /etc/ganglia to slaves...
+#ec2-54-206-36-2.ap-southeast-2.compute.amazonaws.com
+#Shutting down GANGLIA gmond:                               [FAILED]
+#Starting GANGLIA gmond: no such option 'host_tmax'
+#Parse error for '/etc/ganglia/gmond.conf'
+#
+#                                                           [FAILED]
+#Shutting down GANGLIA gmond:                               [FAILED]
+#Starting GANGLIA gmond: no such option 'host_tmax'
+#Parse error for '/etc/ganglia/gmond.conf'
+#
+#                                                           [FAILED]
+#Connection to ec2-54-206-36-2.ap-southeast-2.compute.amazonaws.com closed.
+#ln: target `/var/lib/ganglia/conf/' is not a directory: No such file or directory
+#Shutting down GANGLIA gmetad:                              [FAILED]
+#Starting GANGLIA gmetad:                                   [  OK  ]
+#Stopping httpd:                                            [FAILED]
+#Starting httpd: (13)Permission denied: make_sock: could not bind to address [::]:5080
+#(13)Permission denied: make_sock: could not bind to address 0.0.0.0:5080
+#no listening sockets available, shutting down
+#Unable to open logs
+#                                                           [FAILED]
+#Connection to ec2-54-206-35-187.ap-southeast-2.compute.amazonaws.com closed.
