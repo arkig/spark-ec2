@@ -11,7 +11,7 @@ if [ -d "hadoop" ]; then
   echo "Hadoop build exists on image, using it. Details:"
   hadoop/bin/hadoop version
 
-  cp hadoop/ ephemeral-hdfs/
+  cp -r hadoop ephemeral-hdfs
 
   # Have single conf dir
   rm -rf /root/ephemeral-hdfs/etc/hadoop/
