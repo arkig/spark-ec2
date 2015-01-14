@@ -14,6 +14,10 @@ sudo yum install -y gcc gcc-c++
 # The following are required by python installation/libraries + some are needed for other things
 sudo yum install -y zlib-devel bzip2-devel openssl-devel ncurses-devel sqlite-devel readline-devel tk-devel gdbm-devel db4-devel libpcap-devel xz-devel
 
+# For connection debugging
+# nc?
+sudo yum install -y telnet
+
 # Perf tools
 sudo yum install -y dstat iotop strace sysstat htop perf
 
