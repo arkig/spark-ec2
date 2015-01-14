@@ -7,7 +7,9 @@ if [ -d "tachyon" ]; then
   return 0
 fi
 
-TACHYON_VERSION=0.5.0
+# Version currently built against in soark 1.2
+TACHYON_VERSION=0.4.1
+#TACHYON_VERSION=0.5.0
 
 # Github tag:
 if [[ "$TACHYON_VERSION" == *\|* ]]

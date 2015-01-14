@@ -5,11 +5,12 @@
 
 # Install Maven (for Hadoop)
 cd /tmp
-wget "http://archive.apache.org/dist/maven/maven-3/3.2.3/binaries/apache-maven-3.2.3-bin.tar.gz"
-tar xvzf apache-maven-3.2.3-bin.tar.gz
-mv apache-maven-3.2.3 /opt/
+MAVEN_VERSION="3.2.3"
+wget "http://archive.apache.org/dist/maven/maven-3/${MAVEN_VERSION}/binaries/apache-maven-${MAVEN_VERSION}-bin.tar.gz"
+tar xvzf apache-maven-${MAVEN_VERSION}-bin.tar.gz
+mv apache-maven-${MAVEN_VERSION} /opt/
 # Edit bash profile
-echo "export M2_HOME=/opt/apache-maven-3.2.3" >> ~/.bash_profile
+echo "export M2_HOME=/opt/apache-maven-${MAVEN_VERSION}" >> ~/.bash_profile
 echo "export PATH=\$PATH:\$M2_HOME/bin" >> ~/.bash_profile
 source ~/.bash_profile
 
@@ -35,10 +36,15 @@ cd hadoop-${HADOOP_VERSION}-src
 mvn package -Pdist,native -DskipTests -Dtar
 sudo mv hadoop-dist/target/hadoop-${HADOOP_VERSION}/lib/native/* /root/hadoop-native
 
+# Keep build in case we want to use it later
+sudo rm -rf /root/hadoop
+sudo mv hadoop-dist/target/hadoop-${HADOOP_VERSION} /root/hadoop
+
 # hadoop user ownership/setup??
 
 # Install Snappy lib (for Hadoop)
 sudo yum install -y snappy
 sudo ln -sf /usr/lib64/libsnappy.so.1 /root/hadoop-native/.
 
+# Clean up
 rm -rf /tmp/*
