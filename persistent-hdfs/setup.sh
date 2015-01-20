@@ -18,9 +18,10 @@ if [[ ! -e /vol/persistent-hdfs/dfs/name ]] ; then
   $PERSISTENT_HDFS/bin/hdfs namenode -format
 fi
 
+# Must do this after starting hdfs
 # add usernames
-$EPHEMERAL_HDFS/bin/hdfs dfs -mkdir /user
-$EPHEMERAL_HDFS/bin/hdfs dfs -mkdir /user/root
+#$PERSISTENT_HDFS/bin/hdfs dfs -mkdir /user
+#$PERSISTENT_HDFS/bin/hdfs dfs -mkdir /user/root
 
 echo "Persistent HDFS installed, won't start by default..."
 

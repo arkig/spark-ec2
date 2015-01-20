@@ -9,28 +9,34 @@
 # - TACHYON_UNDERFS_ADDRESS, to set the under filesystem address.
 # - TACHYON_WORKER_MEMORY_SIZE, to set how much memory to use (e.g. 1000mb, 2gb) per worker
 # - TACHYON_RAM_FOLDER, to set where worker stores in memory data
-#
+# - TACHYON_UNDERFS_HDFS_IMPL, to set which HDFS implementation to use (e.g. com.mapr.fs.MapRFileSystem,
+#   org.apache.hadoop.hdfs.DistributedFileSystem)
+
 # The following gives an example:
 
 if [[ `uname -a` == Darwin* ]]; then
   # Assuming Mac OS X
-  export JAVA_HOME=$(/usr/libexec/java_home)
+  export JAVA_HOME=${JAVA_HOME:-$(/usr/libexec/java_home)}
   export TACHYON_RAM_FOLDER=/Volumes/ramdisk
   export TACHYON_JAVA_OPTS="-Djava.security.krb5.realm= -Djava.security.krb5.kdc="
 else
   # Assuming Linux
   if [ -z "$JAVA_HOME" ]; then
     export JAVA_HOME=/usr/lib/jvm/java-1.7.0
+    #export JAVA_HOME=/usr/lib/jvm/java-7-oracle
   fi
   export TACHYON_RAM_FOLDER=/mnt/ramdisk
 fi
 
+
 export JAVA="$JAVA_HOME/bin/java"
 export TACHYON_MASTER_ADDRESS={{active_master}}
 export TACHYON_UNDERFS_ADDRESS=hdfs://{{active_master}}:9000
+#export TACHYON_UNDERFS_ADDRESS=$TACHYON_HOME/underfs
 #export TACHYON_UNDERFS_ADDRESS=hdfs://localhost:9000
 export TACHYON_WORKER_MEMORY_SIZE={{default_tachyon_mem}}
 export TACHYON_UNDERFS_HDFS_IMPL=org.apache.hadoop.hdfs.DistributedFileSystem
+
 
 CONF_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
@@ -46,5 +52,12 @@ export TACHYON_JAVA_OPTS+="
   -Dtachyon.master.worker.timeout.ms=60000
   -Dtachyon.master.hostname=$TACHYON_MASTER_ADDRESS
   -Dtachyon.master.journal.folder=$TACHYON_HOME/journal/
-  -Dtachyon.master.pinlist=/pinfiles;/pindata
+  -Dorg.apache.jasper.compiler.disablejsr199=true
+  -Djava.net.preferIPv4Stack=true
 "
+
+# Master specific parameters. Default to TACHYON_JAVA_OPTS.
+export TACHYON_MASTER_JAVA_OPTS="$TACHYON_JAVA_OPTS"
+
+# Worker specific parameters that will be shared to all workers. Default to TACHYON_JAVA_OPTS.
+export TACHYON_WORKER_JAVA_OPTS="$TACHYON_JAVA_OPTS"

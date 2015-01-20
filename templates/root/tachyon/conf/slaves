@@ -1,1 +1,4 @@
+{{master_list}}
 {{slave_list}}
+
+# Added master_list as otherwise there are problems (e.g. submitting jobs) on the master with tachyon 0.5.0
