@@ -29,6 +29,10 @@ else
   $EPHEMERAL_HDFS/bin/hdfs namenode -format
 fi
 
+# add usernames
+$EPHEMERAL_HDFS/bin/hdfs dfs -mkdir /user
+$EPHEMERAL_HDFS/bin/hdfs dfs -mkdir /user/root
+
 echo "Starting ephemeral HDFS..."
 # This is different depending on version. Simple hack: just try both.
 $EPHEMERAL_HDFS/sbin/start-dfs.sh

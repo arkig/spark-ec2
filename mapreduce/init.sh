@@ -36,5 +36,9 @@ else
     esac
 fi
 
-/root/spark-ec2/copy-dir /root/mapreduce
+# Don't copy-dir if we're running this as part of image creation.
+if [ -d "/root/spark-ec2" ]; then
+    /root/spark-ec2/copy-dir /root/mapreduce
+fi
+
 popd

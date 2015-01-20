@@ -22,7 +22,7 @@ echo "export JAVA_HOME=/usr/lib/jvm/java-${JAVA_VERSION}" >> ~/.bash_profile
 source ~/.bash_profile
 
 
-# TODO use oracle jdk instead
+# TODO use oracle jdk instead.. find what version best.
 #wget http://download.oracle.com/otn-pub/java/jdk/8u11-b12/jdk-8u11-linux-x64.tar.gz
 #tar -zxvz jdk-8u11-linux-64.tar.gz /opt/jdk1.9.0_11
 #/usr/sbin/alternatives --install /opt/jdk1.8.0_11/bin/java

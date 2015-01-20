@@ -50,6 +50,10 @@ else
 
 fi
 
-/root/spark-ec2/copy-dir /root/ephemeral-hdfs
+# Don't copy-dir if we're running this as part of image creation.
+if [ -d "/root/spark-ec2" ]; then
+    /root/spark-ec2/copy-dir /root/ephemeral-hdfs
+fi
+
 popd
 

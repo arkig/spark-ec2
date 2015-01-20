@@ -39,7 +39,8 @@
         "./hadoop-setup.sh",
         "./R-setup.sh",
         "./vw-setup.sh",
-        "./extras-setup.sh"
+        "./extras-setup.sh",
+        "./init_modules.sh"
       ],
       "pause_before": "10s"
     }

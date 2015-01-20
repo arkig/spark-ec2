@@ -7,23 +7,34 @@ if [ -d "spark" ]; then
   return
 fi
 
+# TODO
+echo "** Warning: ignoring SPARK_VERSION=$SPARK_VERSION **"
+SPARK_VERSION="https://github.com/apache/spark|tags/v1.2.0"
+
 # Github tag:
 if [[ "$SPARK_VERSION" == *\|* ]]
 then
 
-  #TODO must build with correct hadoop (and tackyon) version and yarn flag set appropriately
+  HADOOP_VERSION="2.4.1"
+  # TODO find way of specifying Tachyon version in build via command line... probably not possible until they make it a property.
 
+  # Note: this takes a over an hour on an m3.medium
+  # TODO find way of selecting which modules to build, as we don't need all of them.
+  echo "Building Spark from $repo, hash: $git_hash against Hadoop $HADOOP_VERSION"
   mkdir spark
   pushd spark
   git init
-  repo=`python -c "print '$SPARK_VERSION'.split('|')[0]"` 
+  repo=`python -c "print '$SPARK_VERSION'.split('|')[0]"`
   git_hash=`python -c "print '$SPARK_VERSION'.split('|')[1]"`
   git remote add origin $repo
   git fetch origin
   git checkout $git_hash
-  sbt/sbt clean assembly
-  sbt/sbt publish-local
+  export MAVEN_OPTS="-Xmx2g -XX:MaxPermSize=512M -XX:ReservedCodeCacheSize=512m"
+  # TODO need -Phadoop-provided ??
+  # TODO mvn install ??
+  mvn -Pyarn -Phadoop-2.4 -Dhadoop.version=${HADOOP_VERSION} -DskipTests clean package
   popd
+
 
 # Pre-packaged spark version:
 else 

@@ -7,15 +7,37 @@ if [ -d "tachyon" ]; then
   return 0
 fi
 
-# Version currently built against in soark 1.2
-TACHYON_VERSION=0.4.1
-#TACHYON_VERSION=0.5.0
+#TACHYON_VERSION=0.4.1
+
+# Version currently built against in spark 1.2 .. see core/pom.xml
+TACHYON_VERSION="git://github.com/amplab/tachyon.git|tags/v0.5.0"
 
 # Github tag:
 if [[ "$TACHYON_VERSION" == *\|* ]]
 then
-  # Not yet supported
-  echo ""
+
+  HADOOP_VERSION="2.4.1"
+
+  # See http://tachyon-project.org/master/Building-Tachyon-Master-Branch.html
+  echo "Building Tachyon ${TACHYON_VERSION} against Hadoop ${HADOOP_VERSION}..."
+
+  #git clone git://github.com/amplab/tachyon.git
+  #cd tachyon
+  #git checkout tags/v$TACHYON_VERSION
+
+  mkdir tachyon
+  pushd tachyon
+  git init
+  repo=`python -c "print '$TACHYON_VERSION'.split('|')[0]"`
+  git_hash=`python -c "print '$TACHYON_VERSION'.split('|')[1]"`
+  git remote add origin $repo
+  git fetch origin
+  git checkout $git_hash
+
+  mvn -Dhadoop.version=${HADOOP_VERSION} -DskipTests clean install
+  bin/tachyon version
+  echo "Done"
+
 # Pre-package tachyon version
 else
   case "$TACHYON_VERSION" in

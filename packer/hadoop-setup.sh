@@ -3,7 +3,7 @@
 # Useful:
 # - https://cyberfrontierlabs.com/2014/09/30/installing-hadoop-2-5-1-on-centos-7/
 
-# Install Maven (for Hadoop)
+# Install Maven (for building Hadoop, etc)
 cd /tmp
 MAVEN_VERSION="3.2.3"
 wget "http://archive.apache.org/dist/maven/maven-3/${MAVEN_VERSION}/binaries/apache-maven-${MAVEN_VERSION}-bin.tar.gz"
