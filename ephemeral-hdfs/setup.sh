@@ -2,15 +2,18 @@
 
 EPHEMERAL_HDFS=/root/ephemeral-hdfs
 
+pushd /root/spark-ec2/ephemeral-hdfs
+
 # Set hdfs url to make it easier
 HDFS_URL="hdfs://$PUBLIC_DNS:9000"
 echo "export HDFS_URL=$HDFS_URL" >> ~/.bash_profile
 
-pushd /root/spark-ec2/ephemeral-hdfs
+echo "Running ephemeral HDFS setup-slave on master..."
 source ./setup-slave.sh
 
+echo "Running ephemeral HDFS setup-slave on other cluster nodes..."
 for node in $SLAVES $OTHER_MASTERS; do
-  echo $node
+  echo "... $node"
   ssh -t -t $SSH_OPTS root@$node "/root/spark-ec2/ephemeral-hdfs/setup-slave.sh" & sleep 0.3
 done
 wait
