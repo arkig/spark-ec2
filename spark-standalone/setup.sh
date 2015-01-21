@@ -8,10 +8,13 @@ fi
 
 # Copy the slaves to spark conf
 cp /root/spark-ec2/slaves /root/spark/conf/
+# Update on cluster (in case this is run after spark/setup.sh was) TODO ugly dependency
 /root/spark-ec2/copy-dir /root/spark/conf
 
 # Set cluster-url to standalone master
 echo "spark://""`cat /root/spark-ec2/masters`"":7077" > /root/spark-ec2/cluster-url
+
+# Deploy spark-ec2
 /root/spark-ec2/copy-dir /root/spark-ec2
 
 # The Spark master seems to take time to start and workers crash if

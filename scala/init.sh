@@ -19,4 +19,9 @@ tar xvzf scala-*.tgz > /tmp/spark-ec2_scala.log
 rm -f scala-*.tgz
 mv `ls -d scala-* | grep -v ec2` scala
 
+# Don't copy-dir if we're running this as part of image creation.
+if [ -d "/root/spark-ec2" ]; then
+    /root/spark-ec2/copy-dir /root/scala
+fi
+
 popd

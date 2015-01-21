@@ -10,6 +10,7 @@ for node in $SLAVES $OTHER_MASTERS; do
 done
 wait
 
+echo "Deploying persistent-hdfs config files..."
 /root/spark-ec2/copy-dir $PERSISTENT_HDFS/conf
 
 if [[ ! -e /vol/persistent-hdfs/dfs/name ]] ; then

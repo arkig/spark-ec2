@@ -15,6 +15,7 @@ for node in $SLAVES $OTHER_MASTERS; do
 done
 wait
 
+echo "Deploying ephemeral-hdfs config files..."
 /root/spark-ec2/copy-dir $EPHEMERAL_HDFS/conf
 
 NAMENODE_DIR=/mnt/ephemeral-hdfs/dfs/name

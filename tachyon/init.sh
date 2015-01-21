@@ -64,4 +64,9 @@ else
   mv `ls -d tachyon-*` tachyon
 fi
 
+# Don't copy-dir if we're running this as part of image creation.
+if [ -d "/root/spark-ec2" ]; then
+  /root/spark-ec2/copy-dir /root/tachyon
+fi
+
 popd
