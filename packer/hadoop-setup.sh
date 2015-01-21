@@ -3,9 +3,10 @@
 # Useful:
 # - https://cyberfrontierlabs.com/2014/09/30/installing-hadoop-2-5-1-on-centos-7/
 
+source ./image_variables.sh
+
 # Install Maven (for building Hadoop, etc)
 cd /tmp
-MAVEN_VERSION="3.2.3"
 wget "http://archive.apache.org/dist/maven/maven-3/${MAVEN_VERSION}/binaries/apache-maven-${MAVEN_VERSION}-bin.tar.gz"
 tar xvzf apache-maven-${MAVEN_VERSION}-bin.tar.gz
 mv apache-maven-${MAVEN_VERSION} /opt/
@@ -15,7 +16,6 @@ echo "export PATH=\$PATH:\$M2_HOME/bin" >> ~/.bash_profile
 source ~/.bash_profile
 
 # Install exact required version of protobuf
-PROTOBUF_VERSION="2.5.0"
 cd /tmp
 wget https://protobuf.googlecode.com/svn/rc/protobuf-${PROTOBUF_VERSION}.tar.gz
 tar xf protobuf-${PROTOBUF_VERSION}.tar.gz
@@ -26,7 +26,6 @@ make check
 sudo make install
 
 # Build Hadoop to install native libs
-HADOOP_VERSION="2.4.1"
 sudo yum install -y protobuf-compiler cmake openssl-devel
 sudo mkdir /root/hadoop-native
 cd /tmp

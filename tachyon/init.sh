@@ -7,19 +7,21 @@ if [ -d "tachyon" ]; then
   return 0
 fi
 
-#TACHYON_VERSION=0.4.1
-
-# Version currently built against in spark 1.2 .. see core/pom.xml
-TACHYON_VERSION="git://github.com/amplab/tachyon.git|tags/v0.5.0"
+TACHYON_VERSION=${TACHYON_VERSION-"git://github.com/amplab/tachyon.git|tags/v0.5.0"}
 
 # Github tag:
 if [[ "$TACHYON_VERSION" == *\|* ]]
 then
 
-  HADOOP_VERSION="2.4.1"
+  # TODO ensure set
+  #${HADOOP_VERSION:?}
+  HADOOP_VERSION=${HADOOP_VERSION-"2.4.1"}
+
+  repo=`python -c "print '$TACHYON_VERSION'.split('|')[0]"`
+  git_hash=`python -c "print '$TACHYON_VERSION'.split('|')[1]"`
 
   # See http://tachyon-project.org/master/Building-Tachyon-Master-Branch.html
-  echo "Building Tachyon ${TACHYON_VERSION} against Hadoop ${HADOOP_VERSION}..."
+  echo "Building Tachyon from $repo, hash $git_hash against Hadoop ${HADOOP_VERSION}..."
 
   #git clone git://github.com/amplab/tachyon.git
   #cd tachyon
@@ -28,8 +30,6 @@ then
   mkdir tachyon
   pushd tachyon
   git init
-  repo=`python -c "print '$TACHYON_VERSION'.split('|')[0]"`
-  git_hash=`python -c "print '$TACHYON_VERSION'.split('|')[1]"`
   git remote add origin $repo
   git fetch origin
   git checkout $git_hash
@@ -40,23 +40,11 @@ then
 
 # Pre-package tachyon version
 else
-  case "$TACHYON_VERSION" in
-    0.3.0)
-      wget https://s3.amazonaws.com/Tachyon/tachyon-0.3.0-bin.tar.gz
-      ;;
-    0.4.0)
-      wget https://s3.amazonaws.com/Tachyon/tachyon-0.4.0-bin.tar.gz
-      ;;
-    0.4.1)
-      wget https://s3.amazonaws.com/Tachyon/tachyon-0.4.1-bin.tar.gz
-      ;;
-    0.5.0)
-      wget https://s3.amazonaws.com/Tachyon/tachyon-0.5.0-bin.tar.gz
-      ;;
-    *)
-      echo "ERROR: Unknown Tachyon version"
-      return -1
-  esac
+
+  echo "Getting pre-packaged Tachyon $TACHYON_VERSION"
+  echo "WARNING: hadoop dependency is unsupported!"
+
+  wget https://s3.amazonaws.com/Tachyon/tachyon-$TACHYON_VERSION-bin.tar.gz
 
   echo "Unpacking Tachyon"
   tar xvzf tachyon-*.tar.gz > /tmp/spark-ec2_tachyon.log

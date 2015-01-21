@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source ./image_variables.sh
+
 set -e
 
 sudo debuginfo-install -q -y kernel
@@ -27,7 +29,6 @@ echo "export PS1=\"\\u@\\h \\W]\\$ \"" >> ~/.bash_profile
 
 # Install GNU Parallel
 # - used to speed up copying to slaves in cluster setup, etc.
-PARALLEL_VERSION="20141122"
 cd /tmp
 wget http://ftpmirror.gnu.org/parallel/parallel-${PARALLEL_VERSION}.tar.bz2
 bzip2 -dc parallel-${PARALLEL_VERSION}.tar.bz2 | tar xvf -

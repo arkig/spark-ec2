@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "========== START spark-ec2/setup.sh on `hostname` =========="
+echo "\n========== START spark-ec2/setup.sh on `hostname` =========="
 
 # Make sure we are in the spark-ec2 directory
 cd /root/spark-ec2
@@ -19,7 +19,7 @@ hostname $PRIVATE_DNS
 echo $PRIVATE_DNS > /etc/hostname
 export HOSTNAME=$PRIVATE_DNS  # Fix the bash built-in hostname variable too
 
-echo "===== Initiating Spark EC2 setup on `hostname` ====="
+echo "\n===== Initiating Spark EC2 setup on `hostname` ====="
 
 # Set up the masters, slaves, etc files based on cluster env variables
 echo "$MASTERS" > masters
@@ -47,7 +47,7 @@ find . -regex "^.+.\(sh\|py\)" | xargs chmod a+x
 echo "Running setup-slave on master to mount filesystems, etc..."
 source ./setup-slave.sh
 
-echo "===== Approving SSH keys ====="
+echo "\n===== Approving SSH keys ====="
 
 echo "SSH'ing to master machine(s) to approve key(s)..."
 for master in $MASTERS; do
@@ -83,7 +83,7 @@ while [ "e$TODO" != "e" ] && [ $TRIES -lt 4 ] ; do
   fi
 done
 
-echo "===== Deploying spark-ec2 scripts ====="
+echo "\n===== Deploying spark-ec2 scripts ====="
 
 echo "RSYNC'ing /root/spark-ec2 to other cluster nodes..."
 parallel --quote rsync -e "ssh $SSH_OPTS" -az /root/spark-ec2 {}:/root ::: $SLAVES $OTHER_MASTERS
@@ -98,15 +98,15 @@ parallel scp $SSH_OPTS ~/.ssh/id_rsa {}:.ssh ::: $SLAVES $OTHER_MASTERS
 
 # NOTE: We need to rsync spark-ec2 before we can run setup-slave.sh
 # on other cluster nodes
-echo "===== Running slave setup on other cluster nodes ====="
+echo "\n===== Running slave setup on other cluster nodes ====="
 for node in $SLAVES $OTHER_MASTERS; do
-  echo "----- Slave setup on $node -----"
+  echo "\n----- Slave setup on $node -----"
   ssh -t -t $SSH_OPTS root@$node "spark-ec2/setup-slave.sh" & sleep 0.3
 done
 wait
 
 
-echo "===== Initialising modules ====="
+echo "\n===== Initializing modules ====="
 
 # Always include 'scala' module if it's not defined as a work around
 # for older versions of the scripts.
@@ -115,27 +115,47 @@ if [[ ! $MODULES =~ *scala* ]]; then
 fi
 
 for module in $MODULES; do
-  echo "----- Initializing $module -----"
+  echo "\n----- Initializing $module -----"
   if [[ -e $module/init.sh ]]; then
     source $module/init.sh
+  else
+    echo "nothing to do"
   fi
   cd /root/spark-ec2  # guard against init.sh changing the cwd
 done
 
-echo "===== Creating local config files ====="
+echo "\n===== Creating local config files ====="
 
 # TODO: Move configuring templates to a per-module ?
 ./deploy_templates.py
 
-echo "===== Setting up modules ====="
+echo "\n===== Setting up modules ====="
 
 for module in $MODULES; do
-  echo "----- Setting up $module -----"
+  echo "\n----- Setting up $module -----"
   if [[ -e $module/setup.sh ]]; then
     source $module/setup.sh
+  else
+    echo "nothing to do"
   fi
   sleep 1
   cd /root/spark-ec2  # guard against setup.sh changing the cwd
 done
 
-echo "========== END spark-ec2/setup.sh on `hostname` =========="
+TEST_MODULES=true
+
+if $TEST_MODULES; then
+    echo "\n===== Testing modules ====="
+    for module in $MODULES; do
+      echo "\n----- Testing $module -----"
+      if [[ -e $module/test.sh ]]; then
+        source $module/test.sh
+      else
+        echo "nothing to do"
+      fi
+      sleep 1
+      cd /root/spark-ec2  # guard against setup.sh changing the cwd
+    done
+fi
+
+echo "\n========== END spark-ec2/setup.sh on `hostname` =========="

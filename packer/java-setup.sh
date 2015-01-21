@@ -1,16 +1,13 @@
 #!/bin/sh
 
+source ./image_variables.sh
+
 # Should be done by now
 # sudo yum install -y gcc gcc-c++
 
 # cant find packages
 #sudo yum-complete-transaction
 #sudo debuginfo-install -q -y glibc
-
-
-
-
-JAVA_VERSION="1.7.0"
 
 sudo yum install -y java-${JAVA_VERSION}-openjdk-devel ant
 

@@ -8,8 +8,7 @@ if [ -d "mapreduce" ]; then
 fi
 
 if [ -d "hadoop" ]; then
-  echo "Hadoop build exists on image, using it. Details:"
-  hadoop/bin/hadoop version
+  echo "Hadoop build exists on image, using it."
 
   cp -r hadoop mapreduce
 
@@ -19,21 +18,23 @@ if [ -d "hadoop" ]; then
 
 else
 
-    case "$HADOOP_MAJOR_VERSION" in
-      1)
-        echo "Nothing to initialize for MapReduce in Hadoop 1"
-        ;;
-      2)
-        wget http://s3.amazonaws.com/spark-related-packages/mr1-2.0.0-mr1-cdh4.2.0.tar.gz
-        tar -xvzf mr1-*.tar.gz > /tmp/spark-ec2_mapreduce.log
-        rm mr1-*.tar.gz
-        mv hadoop-2.0.0-mr1-cdh4.2.0/ mapreduce/
-        ;;
+  source ../hadoop/init.sh
 
-      *)
-         echo "ERROR: Unknown Hadoop version"
-         return -1
-    esac
+  cp -r hadoop mapreduce
+
+  case `python -c "print '$HADOOP_VERSION'[0]"` in
+    1)
+      ;;
+    2)
+      # Have single conf dir
+      rm -rf /root/mapreduce/etc/hadoop/
+      ln -s /root/mapreduce/conf /root/mapreduce/etc/hadoop
+      ;;
+    *)
+      echo "ERROR: Unknown Hadoop version"
+      return -1
+  esac
+
 fi
 
 # Don't copy-dir if we're running this as part of image creation.
