@@ -34,9 +34,9 @@ wget "http://archive.apache.org/dist/hadoop/common/hadoop-${HADOOP_VERSION}/hado
 tar xvzf hadoop-${HADOOP_VERSION}-src.tar.gz
 cd hadoop-${HADOOP_VERSION}-src
 mvn package -Pdist,native -DskipTests -Dtar
-sudo mv hadoop-dist/target/hadoop-${HADOOP_VERSION}/lib/native/* /root/hadoop-native
+sudo cp hadoop-dist/target/hadoop-${HADOOP_VERSION}/lib/native/* /root/hadoop-native
 
-# Keep build in case we want to use it later
+# Keep build so we can use it later
 sudo rm -rf /root/hadoop
 sudo mv hadoop-dist/target/hadoop-${HADOOP_VERSION} /root/hadoop
 

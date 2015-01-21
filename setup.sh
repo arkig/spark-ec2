@@ -1,5 +1,7 @@
 #!/bin/bash
 
+echo "========== START spark-ec2/setup.sh on `hostname` =========="
+
 # Make sure we are in the spark-ec2 directory
 cd /root/spark-ec2
 
@@ -135,3 +137,5 @@ for module in $MODULES; do
   sleep 1
   cd /root/spark-ec2  # guard against setup.sh changing the cwd
 done
+
+echo "========== END spark-ec2/setup.sh on `hostname` =========="
