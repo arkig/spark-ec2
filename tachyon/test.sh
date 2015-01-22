@@ -1,3 +1,3 @@
 #!/bin/sh
 
-/root/tachyon/bin/runTests.sh
+/root/tachyon/bin/tachyon runTests
