@@ -18,8 +18,7 @@ PUBLIC_DNS=`wget -q -O - http://instance-data.ec2.internal/latest/meta-data/host
 hostname $PRIVATE_DNS
 echo $PRIVATE_DNS > /etc/hostname
 export HOSTNAME=$PRIVATE_DNS  # Fix the bash built-in hostname variable too
-
-echo "\n===== Initiating Spark EC2 setup on `hostname` ====="
+echo "Hostname: `hostname`"
 
 # Set up the masters, slaves, etc files based on cluster env variables
 echo "$MASTERS" > masters
@@ -31,6 +30,9 @@ OTHER_MASTERS=`cat masters | sed '1d'`
 SLAVES=`cat slaves`
 SSH_OPTS="-o StrictHostKeyChecking=no -o ConnectTimeout=5"
 
+# Defaults in case these aren't in ec2-variables yet
+TEST_MODULES=${TEST_MODULES-true}
+
 if [[ "x$JAVA_HOME" == "x" ]] ; then
     echo "Expected JAVA_HOME to be set in .bash_profile!"
     exit 1
@@ -40,6 +42,8 @@ if [[ `tty` == "not a tty" ]] ; then
     echo "Expecting a tty or pty! (use the ssh -t option)."
     exit 1
 fi
+
+echo "\n===== Setup ====="
 
 echo "Setting executable permissions on scripts..."
 find . -regex "^.+.\(sh\|py\)" | xargs chmod a+x
@@ -84,6 +88,8 @@ while [ "e$TODO" != "e" ] && [ $TRIES -lt 4 ] ; do
 done
 
 echo "\n===== Deploying spark-ec2 scripts ====="
+# NOTE: We need to rsync spark-ec2 before we can run setup-slave.sh
+# on other cluster nodes
 
 echo "RSYNC'ing /root/spark-ec2 to other cluster nodes..."
 parallel --quote rsync -e "ssh $SSH_OPTS" -az /root/spark-ec2 {}:/root ::: $SLAVES $OTHER_MASTERS
@@ -96,8 +102,6 @@ parallel scp $SSH_OPTS ~/.ssh/id_rsa {}:.ssh ::: $SLAVES $OTHER_MASTERS
 # done
 # wait
 
-# NOTE: We need to rsync spark-ec2 before we can run setup-slave.sh
-# on other cluster nodes
 echo "\n===== Running slave setup on other cluster nodes ====="
 for node in $SLAVES $OTHER_MASTERS; do
   echo "\n----- Slave setup on $node -----"
@@ -142,7 +146,6 @@ for module in $MODULES; do
   cd /root/spark-ec2  # guard against setup.sh changing the cwd
 done
 
-TEST_MODULES=true
 
 if $TEST_MODULES; then
     echo "\n===== Testing modules ====="
