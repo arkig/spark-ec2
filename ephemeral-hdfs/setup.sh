@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 EPHEMERAL_HDFS=/root/ephemeral-hdfs
 

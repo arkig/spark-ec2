@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # We no longer have to copy entire /root/spark here as it's now done in init.sh
 

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 PERSISTENT_HDFS=/root/persistent-hdfs
 

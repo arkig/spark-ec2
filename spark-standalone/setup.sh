@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 BIN_FOLDER="/root/spark/sbin"
 

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 pushd /root
 
@@ -48,7 +48,7 @@ else
 
   echo "Unpacking Tachyon"
   tar xvzf tachyon-*.tar.gz > /tmp/spark-ec2_tachyon.log
-  rm tachyon-*.tar.gz
+  rm -f tachyon-*.tar.gz
   mv `ls -d tachyon-*` tachyon
 fi
 

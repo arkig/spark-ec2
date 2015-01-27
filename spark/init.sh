@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 pushd /root
 
@@ -51,7 +51,7 @@ else
 
   echo "Unpacking Spark"
   tar xvzf spark-*.tgz > /tmp/spark-ec2_spark.log
-  rm spark-*.tgz
+  rm -f spark-*.tgz
   mv `ls -d spark-* | grep -v ec2` spark
 fi
 

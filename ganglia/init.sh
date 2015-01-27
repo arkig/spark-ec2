@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # Note: It is assumed that ganglia and dependencies are installed
 

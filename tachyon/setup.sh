@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 echo "Deploying Tachyon config files..."
 /root/spark-ec2/copy-dir /root/tachyon/conf

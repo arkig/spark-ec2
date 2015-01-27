@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 echo "Deploying ganglia configuration..."
 /root/spark-ec2/copy-dir /etc/ganglia/

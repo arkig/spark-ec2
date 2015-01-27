@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # Setup persistent-hdfs
 mkdir -p /mnt/persistent-hdfs/logs

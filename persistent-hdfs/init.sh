@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 pushd /root
 
@@ -34,9 +34,6 @@ else
       echo "ERROR: Unknown Hadoop version"
       return -1
   esac
-
-  # Assume this is version compatible!!!
-  cp /root/hadoop-native/* /root/persistent-hdfs/lib/native/
 
 fi
 

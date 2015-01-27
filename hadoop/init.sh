@@ -17,7 +17,13 @@ wget http://s3.amazonaws.com/spark-related-packages/hadoop-${HADOOP_VERSION}.tar
 
 echo "Unpacking Hadoop"
 tar xvzf hadoop-*.tar.gz > /tmp/spark-ec2_hadoop.log
-rm hadoop-*.tar.gz
+rm -f hadoop-*.tar.gz
 mv `ls -d hadoop-*` hadoop
+
+if [ -d "hadoop-native" ]; then
+  echo "Hadoop native libs seem to be installed. Using them."
+  # NOTE: Assumes this is version compatible!!!
+  cp /root/hadoop-native/* /root/hadoop/lib/native/
+fi
 
 popd

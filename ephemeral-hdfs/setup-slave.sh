@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # Setup ephemeral-hdfs
 mkdir -p /mnt/ephemeral-hdfs/logs
