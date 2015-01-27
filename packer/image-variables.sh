@@ -1,8 +1,17 @@
 #!/bin/sh
 
+# One location for configuring these for:
+# - manual image creation / testing
+# - use in packer (via an ugly ugly hack)
+
+echo "Setting image variables"
+
 export PARALLEL_VERSION=${PARALLEL_VERSION-"20141122"}
 
-export JAVA_VERSION=${JAVA_VERSION-"1.7.0"}
+# Oracle java
+export ORACLE_JAVA_VERSION=${ORACLE_JAVA_VERSION-"7u75"}
+# OpenJDK is used iff above is not set.
+export OPENJDK_JAVA_VERSION=${OPENJDK_JAVA_VERSION-"1.7.0"}
 
 export MAVEN_VERSION=${MAVEN_VERSION-"3.2.3"}
 export PROTOBUF_VERSION=${PROTOBUF_VERSION-"2.5.0"}
@@ -17,7 +26,7 @@ export VW_VERSION=${VW_VERSION-"7.7"}
 # ---------------------------------------------
 
 # Note: ganglia left out as unsure whether it relies on mount setups
-export IMAGE_MODULES=${IMAGE_MODULES-"scala spark ephemeral-hdfs persistent-hdfs mapreduce spark-standalone tachyon"}
+export IMAGE_MODULES=${IMAGE_MODULES-"scala spark tachyon ephemeral-hdfs persistent-hdfs mapreduce"}
 
 export SCALA_VERSION=${SCALA_VERSION-"2.10.3"}
 
