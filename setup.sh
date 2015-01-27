@@ -112,10 +112,13 @@ wait
 
 echo "\n===== Initializing modules ====="
 
-# Always include 'scala' module if it's not defined as a work around
+# Always include 'scala' and 'rpms' modules if it's not defined as a work around
 # for older versions of the scripts.
 if [[ ! $MODULES =~ *scala* ]]; then
   MODULES=$(printf "%s\n%s\n" "scala" $MODULES)
+fi
+if [[ ! $MODULES =~ *rpms* ]]; then
+  MODULES=$(printf "%s\n%s\n" "rpms" $MODULES)
 fi
 
 for module in $MODULES; do
