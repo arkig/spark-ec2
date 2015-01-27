@@ -26,7 +26,7 @@ export VW_VERSION=${VW_VERSION-"7.7"}
 # ---------------------------------------------
 
 # Note: ganglia left out as unsure whether it relies on mount setups
-export IMAGE_MODULES=${IMAGE_MODULES-"scala spark tachyon ephemeral-hdfs persistent-hdfs mapreduce"}
+export IMAGE_MODULES=${IMAGE_MODULES-"ephemeral-hdfs persistent-hdfs mapreduce scala tachyon spark"}
 
 export SCALA_VERSION=${SCALA_VERSION-"2.10.3"}
 

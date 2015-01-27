@@ -35,8 +35,6 @@ then
   git checkout $git_hash
 
   mvn -Dhadoop.version=${HADOOP_VERSION} -DskipTests clean install
-  bin/tachyon version
-  echo "Done"
 
 # Pre-package tachyon version
 else

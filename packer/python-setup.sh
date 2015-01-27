@@ -39,7 +39,8 @@ cd Python-${PYTHON_VERSION}
 make
 sudo make altinstall
 
-# Seems I need to do this for correct PATH
+# I need to do this for correct PATH
+# ... and use sudo env "PATH=$PATH" so that it's available in sudo
 set +u
 source ~/.bash_profile
 set -u
@@ -47,32 +48,30 @@ set -u
 # Install setuptools...
 cd /tmp
 wget https://bitbucket.org/pypa/setuptools/raw/bootstrap/ez_setup.py
-#... for python 2.7
-sudo python2.7 ez_setup.py
+sudo env "PATH=$PATH" python2.7 ez_setup.py
 
 # Install pip using the newly installed setuptools:
-sudo easy_install-2.7 pip
+sudo env "PATH=$PATH" easy_install-2.7 pip
 
 # Packages
 # See: http://www.scipy.org/stackspec.html#stackspec
-sudo pip2.7 install numpy
-sudo pip2.7 install psutil
-sudo pip2.7 install tornado
-sudo pip2.7 install pyzmq
+sudo env "PATH=$PATH" pip2.7 install numpy
+sudo env "PATH=$PATH" pip2.7 install psutil
+sudo env "PATH=$PATH" pip2.7 install tornado
+sudo env "PATH=$PATH" pip2.7 install pyzmq
 # Unsure if all optimisations worked for this...
-sudo pip2.7 install scipy
-sudo pip2.7 install ipython
-sudo pip2.7 install pandas
+sudo env "PATH=$PATH" pip2.7 install scipy
+sudo env "PATH=$PATH" pip2.7 install ipython
+sudo env "PATH=$PATH" pip2.7 install pandas
 
-sudo pip2.7 install pyparsing
-sudo pip2.7 install matplotlib
+sudo env "PATH=$PATH" pip2.7 install pyparsing
+sudo env "PATH=$PATH" pip2.7 install matplotlib
 # To check backends:
 # > import matplotlib.rcsetup as rcsetup
 # > print(rcsetup.all_backends)
 # TODO want to install latex first
 
-#sudo pip2.7 install Theano
-
+#sudo env "PATH=$PATH" pip2.7 install Theano
 
 rm -rf /tmp/*
 

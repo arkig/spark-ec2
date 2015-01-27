@@ -46,8 +46,7 @@
         "./python-setup.sh",
         "./setup-mounts.sh",
         "./vw-setup.sh",
-        "./extras-setup.sh",
-        "./clean.sh"
+        "./extras-setup.sh"
       ]
     },
     {
@@ -61,6 +60,13 @@
       "scripts": [
         "./init-modules.sh"
       ]
+    },
+    {
+      "type": "shell",
+      "scripts": [
+        "./clean.sh"
+      ]
     }
+
   ]
 }
