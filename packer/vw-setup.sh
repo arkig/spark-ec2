@@ -1,6 +1,8 @@
 #!/bin/sh
 
-source ./image_variables.sh
+set -e
+set -x
+set -u
 
 # Boost dependency
 sudo yum install -y boost boost-devel

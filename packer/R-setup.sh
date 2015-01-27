@@ -1,6 +1,9 @@
 #!/bin/sh
 
-# TODO consider doing this before installing matplotlib - may give better backends
+set -e
+set -x
+set -u
+
 sudo yum install -y R
 
 # Create /usr/bin/realpath which is used by R to find Java installations

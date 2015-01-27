@@ -1,5 +1,8 @@
 #!/bin/sh
 
+set -e
+set -x
+set -u
 
 # Set up ephemeral mounts
 sudo sed -i 's/mounts.*//g' /etc/cloud/cloud.cfg

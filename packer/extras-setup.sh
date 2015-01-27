@@ -1,7 +1,10 @@
 #!/bin/sh
 
-#TODO removed libselinux-python
-sudo yum install -y ntp ntpdate net-snmp wget at vim dmidecode man-pages man
+set -e
+set -x
+set -u
+
+sudo yum install -y ntp ntpdate net-snmp at vim dmidecode man-pages man
 
 # C++ dependencies
 # Previous steps seem to get all these
