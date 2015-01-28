@@ -164,4 +164,11 @@ if $TEST_MODULES; then
     done
 fi
 
+echo -e "\n========== Services =========="
+MASTER=`cat masters | head -n1`
+echo "Spark:   http://$MASTER:8080"
+echo "Tachyon: http://$MASTER:19999"
+echo "Hadoop:  http://$MASTER:50070"
+echo "Ganglia: http://$MASTER:5080/ganglia"
+
 echo -e "\n========== END spark-ec2/setup.sh on `hostname` =========="

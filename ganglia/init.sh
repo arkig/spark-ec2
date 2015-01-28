@@ -8,9 +8,13 @@ rm -rf /mnt/ganglia/rrds/*
 
 # Make sure rrd storage directory has right permissions
 mkdir -p /mnt/ganglia/rrds
-chown -R nobody:nobody /mnt/ganglia/rrds
+chown -R ganglia:ganglia /mnt/ganglia/rrds
 
 # Symlink /var/lib/ganglia/rrds to /mnt/ganglia/rrds
 rmdir /var/lib/ganglia/rrds
 ln -s /mnt/ganglia/rrds /var/lib/ganglia/rrds
+
+# Note that we're using the default httpd.conf, which works fine.
+# Just change the default listening port from 80
+sudo sed -i 's/Listen .*/Listen 5080/g' /etc/httpd/conf/httpd.conf
 

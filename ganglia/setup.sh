@@ -11,12 +11,12 @@ for node in $SLAVES $OTHER_MASTERS; do
 done
 
 # gmeta needs rrds to be owned by nobody
-chown -R nobody /var/lib/ganglia/rrds
+#chown -R nobody /var/lib/ganglia/rrds
 
 # Had to add this, as not exists, for below..
-mkdir /var/lib/ganglia/conf
+#mkdir /var/lib/ganglia/conf
 # cluster-wide aggregates only show up with this. TODO: Fix this cleanly ?
-ln -s /usr/share/ganglia/conf/default.json /var/lib/ganglia/conf/
+#ln -s /usr/share/ganglia/conf/default.json /var/lib/ganglia/conf/
 
 /etc/init.d/gmetad restart
 

@@ -3,9 +3,6 @@
 # Launch spark in standalone mode.
 # NOTE: Assumes spark and tachyon have been set ap already
 
-set -e
-set -x
-set -u
 
 BIN_FOLDER="/root/spark/sbin"
 if [[ "0.7.3 0.8.0 0.8.1" =~ $SPARK_VERSION ]]; then
