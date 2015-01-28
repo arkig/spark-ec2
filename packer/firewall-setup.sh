@@ -16,6 +16,6 @@ sudo chkconfig iptables off
 
 # Turn off SELinux...
 sudo setenforce 0
-# and make it permanent
+# and make it permanent (do in both, just in case symlink between them is ****ed)
 sudo sed -i 's/SELINUX=.*/SELINUX=disabled/g' /etc/sysconfig/selinux
-
+sudo sed -i 's/SELINUX=.*/SELINUX=disabled/g' /etc/sellinux/config
