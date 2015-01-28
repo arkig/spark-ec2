@@ -17,5 +17,5 @@ ln -s /mnt/ganglia/rrds /var/lib/ganglia/rrds
 # Note that we're using the default httpd.conf, which works fine.
 # Just change the default listening port from 80
 # Obviously only need to do this on master.
-sudo sed -i 's/Listen .*/Listen 5080/g' /etc/httpd/conf/httpd.conf
+sudo sed -i 's/^Listen .*/Listen 5080/g' /etc/httpd/conf/httpd.conf
 

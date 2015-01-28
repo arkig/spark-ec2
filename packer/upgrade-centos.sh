@@ -35,7 +35,7 @@ else
     yum install -y cloud-init
 
     # Enable root login (if not already)
-    sudo sed -i 's/PermitRootLogin.*/PermitRootLogin without-password/g' /etc/ssh/sshd_config
+    sudo sed -i 's/^PermitRootLogin.*/PermitRootLogin without-password/g' /etc/ssh/sshd_config
 
     # ... must enable at cloud.cfg level too
     sudo sed -i 's/disable_root.*/disable_root: 0/g' /etc/cloud/cloud.cfg
