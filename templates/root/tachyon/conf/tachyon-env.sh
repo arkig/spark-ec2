@@ -22,12 +22,12 @@ if [[ `uname -a` == Darwin* ]]; then
 else
   # Assuming Linux
   if [ -z "$JAVA_HOME" ]; then
-    export JAVA_HOME=/usr/lib/jvm/java-1.7.0
-    #export JAVA_HOME=/usr/lib/jvm/java-7-oracle
+    # Let's fail here to avoid bugs later
+    echo "JAVA_HOME is not set!"
+    return -1
   fi
   export TACHYON_RAM_FOLDER=/mnt/ramdisk
 fi
-
 
 export JAVA="$JAVA_HOME/bin/java"
 export TACHYON_MASTER_ADDRESS={{active_master}}

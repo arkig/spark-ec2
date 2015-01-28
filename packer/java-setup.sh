@@ -15,21 +15,21 @@ if [ -n "$ORACLE_JAVA_VERSION" ]; then
     sudo rpm -ivh jdk-${ORACLE_JAVA_VERSION}-linux-x64.rpm
     rm -f jdk-${ORACLE_JAVA_VERSION}-linux-x64.rpm
 
-    #wget http://download.oracle.com/otn-pub/java/jdk/8u11-b12/jdk-8u11-linux-x64.tar.gz
-    #tar -zxvz jdk-8u11-linux-64.tar.gz /opt/jdk1.9.0_11
-    #/usr/sbin/alternatives --install /opt/jdk1.8.0_11/bin/java
-    #alternatives --config
-    #java -version
-    #export JAVA_HOME=/opt/jdk1.8.0_11/
-    #export PATH=$JAVA_HOME/bin:$PATH
+    # Note: We know this will be the latest
+
+    sudo alternatives --install /usr/bin/java java /usr/java/latest/jre/bin/java 200000
+    sudo alternatives --install /usr/bin/javaws javaws /usr/java/latest/jre/bin/javaws 200000
+    sudo alternatives --install /usr/bin/javac javac /usr/java/latest/bin/javac 200000
+    sudo alternatives --install /usr/bin/jar jar /usr/java/latest/bin/jar 200000
+
+    echo "export JAVA_HOME=/usr/java/latest" >> ~/.bash_profile
 
 elif [ -n "$OPENJDK_JAVA_VERSION" ]; then
 
     sudo yum install -y java-${OPENJDK_JAVA_VERSION}-openjdk-devel
     #sudo yum --enablerepo='*-debug*' install -q -y java-${OPENJDK_JAVA_VERSION}-openjdk-debuginfo.x86_64
 
-    # Pointless, as other scripts don't run in this environment
-    # echo "export JAVA_HOME=/usr/lib/jvm/java-${OPENJDK_JAVA_VERSION}" >> ~/.bash_profile
+    echo "export JAVA_HOME=/usr/lib/jvm/java-${OPENJDK_JAVA_VERSION}" >> ~/.bash_profile
 
 else
     echo "No Java version specified. Exiting"

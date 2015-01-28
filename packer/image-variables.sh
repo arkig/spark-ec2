@@ -10,7 +10,7 @@ export PARALLEL_VERSION=${PARALLEL_VERSION-"20141122"}
 
 # Oracle java
 export ORACLE_JAVA_VERSION=${ORACLE_JAVA_VERSION-"7u75"}
-# OpenJDK is used iff above is not set.
+# Note: OpenJDK is used iff ORACLE_JAVA_VERSION is not set.
 export OPENJDK_JAVA_VERSION=${OPENJDK_JAVA_VERSION-"1.7.0"}
 
 export MAVEN_VERSION=${MAVEN_VERSION-"3.2.3"}
@@ -19,8 +19,9 @@ export HADOOP_VERSION=${HADOOP_VERSION-"2.4.1"}
 
 export PYTHON_VERSION=${PYTHON_VERSION-"2.7.9"}
 
-# 7.8 won't compile
+# Note: 7.8 won't compile
 export VW_VERSION=${VW_VERSION-"7.7"}
+
 
 # For (optional) module initialisation on image
 # ---------------------------------------------
