@@ -13,7 +13,7 @@ if [ -d /root/rpms ]; then
 
     echo "Installing RPMs on other cluster nodes..."
     for node in $SLAVES $OTHER_MASTERS; do
-      echo "\n... Installing rpms on $node"
+      echo -e "\n... Installing rpms on $node"
       ssh -t -t $SSH_OPTS root@$node "sudo rpm -Uvh /root/rpms/*.rpm" & sleep 0.3
     done
     wait

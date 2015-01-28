@@ -13,7 +13,8 @@ if [[ "0.7.3 0.8.0 0.8.1" =~ $SPARK_VERSION ]]; then
 fi
 
 # Set cluster-url to standalone master
-echo "spark://""`cat /root/spark-ec2/masters`"":7077" > /root/spark-ec2/cluster-url
+# This is not read anywhere anymore...
+# echo "spark://""`cat /root/spark-ec2/masters`"":7077" > /root/spark-ec2/cluster-url
 
 # Symlink the work directory to a local disk to avoid EBS volume filling up
 mkdir -p /mnt/spark/work

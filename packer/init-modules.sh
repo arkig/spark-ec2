@@ -20,7 +20,7 @@ source ~/.bash_profile
 set -u
 
 for module in $IMAGE_MODULES; do
-  echo "\n----- Initializing $module -----"
+  echo -e "\n----- Initializing $module -----"
   if [[ -e $BASE_DIR/$module/init.sh ]]; then
     source $BASE_DIR/$module/init.sh
   else
