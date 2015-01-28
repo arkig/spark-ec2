@@ -20,7 +20,7 @@ echo $PRIVATE_DNS > /etc/hostname
 export HOSTNAME=$PRIVATE_DNS  # Fix the bash built-in hostname variable too
 echo "Hostname: `hostname`"
 
-# Set up the masters, slaves, etc files based on cluster env variables
+# Set up the masters, slaves, etc files based on cluster env variables (used by copy_dir, etc..)
 echo "$MASTERS" > masters
 echo "$SLAVES" > slaves
 

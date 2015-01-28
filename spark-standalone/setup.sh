@@ -1,15 +1,16 @@
 #!/bin/sh
+#
+# Launch spark in standalone mode.
+# NOTE: Assumes spark and tachyon have been set ap already
+
+set -e
+set -x
+set -u
 
 BIN_FOLDER="/root/spark/sbin"
-
 if [[ "0.7.3 0.8.0 0.8.1" =~ $SPARK_VERSION ]]; then
   BIN_FOLDER="/root/spark/bin"
 fi
-
-# Copy the slaves to spark conf
-cp /root/spark-ec2/slaves /root/spark/conf/
-# Update on cluster (in case this is run after spark/setup.sh was) TODO ugly dependency
-/root/spark-ec2/copy-dir /root/spark/conf
 
 # Set cluster-url to standalone master
 echo "spark://""`cat /root/spark-ec2/masters`"":7077" > /root/spark-ec2/cluster-url
@@ -22,16 +23,16 @@ ln -s /mnt/spark/work /root/spark/work
 # they start before the master. So start the master first, sleep and then start
 # workers.
 
-# Stop anything that is running
+echo "Stop anything that is running..."
 $BIN_FOLDER/stop-all.sh
 
 sleep 2
 
-# Start Master
+echo "Start master..."
 $BIN_FOLDER/start-master.sh
 
 # Pause
 sleep 20
 
-# Start Workers
+echo "Start workers..."
 $BIN_FOLDER/start-slaves.sh

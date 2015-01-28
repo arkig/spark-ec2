@@ -12,22 +12,12 @@
 # - TACHYON_UNDERFS_HDFS_IMPL, to set which HDFS implementation to use (e.g. com.mapr.fs.MapRFileSystem,
 #   org.apache.hadoop.hdfs.DistributedFileSystem)
 
-# The following gives an example:
 
-if [[ `uname -a` == Darwin* ]]; then
-  # Assuming Mac OS X
-  export JAVA_HOME=${JAVA_HOME:-$(/usr/libexec/java_home)}
-  export TACHYON_RAM_FOLDER=/Volumes/ramdisk
-  export TACHYON_JAVA_OPTS="-Djava.security.krb5.realm= -Djava.security.krb5.kdc="
-else
-  # Assuming Linux
-  if [ -z "$JAVA_HOME" ]; then
-    # Let's fail here to avoid bugs later
-    echo "JAVA_HOME is not set!"
-    return -1
-  fi
-  export TACHYON_RAM_FOLDER=/mnt/ramdisk
-fi
+# The java implementation to use.  Required.
+export JAVA_HOME={{java_home}}
+
+export TACHYON_RAM_FOLDER=/mnt/ramdisk
+
 
 export JAVA="$JAVA_HOME/bin/java"
 export TACHYON_MASTER_ADDRESS={{active_master}}
