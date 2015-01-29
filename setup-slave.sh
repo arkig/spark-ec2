@@ -67,11 +67,25 @@ function setup_instance_volume {
 
 # This will hopefully work for most hvm instance types.
 echo "Setting up ephemeral instance volumes..."
-setup_instance_volume /dev/xvdb /mnt
-setup_instance_volume /dev/xvdc /mnt2
-setup_instance_volume /dev/xvdd /mnt3
-setup_instance_volume /dev/xvde /mnt4
 
+DEVICE_PREFIX="xvd"
+root_device="$(mount | grep 'on / type'| awk '{print $1}')"
+all_disk_devs=(/dev/$DEVICE_PREFIX[a-z])
+echo $root_device
+let count=0
+for disk_dev in ${all_disk_devs[@]}; do
+    if [[ $root_device != $disk_dev* ]]; then
+        ((count++))
+        mount_point=/mnt
+        if [[ $count != 1 ]]; then
+            mount_point="/mnt${count}"
+        fi
+        setup_instance_volume $disk_dev $mount_point
+        echo "$disk_dev $mount_point"
+    else
+      echo "Skipping $disk_dev because it looks to be the root device $root_device"
+    fi
+done
 
 
 XFS_MOUNT_OPTS="defaults,noatime,nodiratime,allocsize=8m"
