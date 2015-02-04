@@ -10,7 +10,7 @@
 
   "builders": [
     {
-      "name": "spark-ds:base:ap-southeast-2:ebs:hvm",
+      "name": "spark-ds:ds-base:ap-southeast-2:ebs:hvm",
       "type": "amazon-ebs",
       "access_key": "{{user `aws_access_key`}}",
       "secret_key": "{{user `aws_secret_key`}}",
