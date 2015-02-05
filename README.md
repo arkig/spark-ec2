@@ -2,11 +2,13 @@
 
 This repository contains a set of scripts used to setup a functional data science cluster on EC2 using the Spark stack and common data science tools.
 
+The focus is on reliability, stability and speed of cluster deployment.
+
 There are two components to this:
 * Automatically build and register an AMI that is pre-configured as much as possible, starting with a CentOS 6 minimal image.
 * Deploy and configure a cluster using this AMI
 
-This work is based on https://github.com/mesos/spark-ec2 and forks. Please see the README.md there for additional details. 
+This work is based on https://github.com/mesos/spark-ec2 (and forks). Please see the README.md there for additional details. 
 
 These scripts are currently compatible with https://github.com/apache/spark/blob/master/ec2/spark_ec2.py, **however you will need to modify it so that it pulls this repo and branch instead of the mesos repo**.
 
