@@ -1,4 +1,4 @@
-# spark-ec2
+# spark-ec2 for Data Science
 
 This repository contains a set of scripts used to setup a functional data science cluster on EC2 using the Spark stack and common data science tools.
 
@@ -16,7 +16,7 @@ Modules:
 
 * Spark in standalone mode (yarn not yet enabled)
 * Tachyon
-* Hadoop DFS running on the instance's local disks.
+* Hadoop DFS running on the instances' local disks.
 * Ganglia
 * Any RPMs (for additional software)
 
