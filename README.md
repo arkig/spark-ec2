@@ -8,25 +8,26 @@ There are two components to this:
 
 This work is based on https://github.com/mesos/spark-ec2 and forks. Please see the README.md there for additional details. 
 
-These scripts are currently compatible with https://github.com/apache/spark/blob/master/ec2/spark_ec2.py, *however you will need to modify it so that it pulls this repo and branch instead of the mesos repo*.
+These scripts are currently compatible with https://github.com/apache/spark/blob/master/ec2/spark_ec2.py, **however you will need to modify it so that it pulls this repo and branch instead of the mesos repo**.
 
 ## Components
 
 Modules:
 
-* Spark in standalone mode
+* Spark in standalone mode (yarn not yet enabled)
 * Tachyon
 * Hadoop DFS running on the instance's local disks.
 * Ganglia
+* Any RPMs (for additional software)
 
-The above modules are configured to work together by these scripts. By default, they are pre-installed on the image.
+The above modules are configured to work together by these scripts. By default, they are pre-installed on the image in order to optimise cluster start time.
 The default versions are: Spark 1.2, Tachyon 0.5, Protobuf 2.5.0 and Hadoop 2.4.1. These are compiled from source against each other to ensure compatibility. 
-You may change these versions, but be aware of the dependencies between them and with the configuration files in `./templates`.
+You may change these versions or use pre-built distributions, but be aware of the dependencies between them and with the configuration files in `./templates`.
 
-Additional software on the image:
+Data science software on the image:
 
 * Python 2.7 and SciPy libraries
-* R
+* R (TODO add libraries)
 * Vowpal Wabbit
 
 
@@ -34,13 +35,12 @@ Additional software on the image:
 
 Build the image according to `./packer/README.MD`
  
-Pass the new image id to the modified `spark_ec2.py` using the `--ami` argument.   
+Pass the new image id to the modified (see above) `spark_ec2.py` using the `--ami` argument.   
 
 ## Details
 
 This assumes you are familiar with how [spark-ec2](https://github.com/mesos/spark-ec2) works.
 
-Notes:
-
-* The modules' `init.sh` scripts can be run as part of the image build. They are always run at cluster deploy time. They will the situation and act appropriately.  
-
+* The modules' optional `init.sh` scripts can be run as part of the image build. They are always run at cluster deploy time. They will the situation and act appropriately. This is the mechanism that allows you to decide what you want on the AMI vs what is installed at deployment time. 
+* The modules' optional `setup.sh` scripts generally start services and do anything that cannot be done at image build time.  
+* The modules' optional `test.sh` scripts are run after all the setup is complete. They allow you to perform simple tests/checks. 
