@@ -1,48 +1,46 @@
-spark-ec2
-=========
+# spark-ec2
 
-This repository contains the set of scripts used to setup a Spark cluster on
-EC2. These scripts are intended to be used by the default Spark AMI and is *not*
-expected to work on other AMIs. If you wish to start a cluster using Spark,
-please refer to http://spark-project.org/docs/latest/ec2-scripts.html 
+This repository contains a set of scripts used to setup a functional data science cluster on EC2 using the Spark stack and common data science tools.
 
-### Details
+There are two components to this:
+* Automatically build and register an AMI that is pre-configured as much as possible, starting with a CentOS 6 minimal image.
+* Deploy and configure a cluster using this AMI
+
+This work is based on https://github.com/mesos/spark-ec2 and forks. Please see the README.md there for additional details. 
+
+These scripts are currently compatible with https://github.com/apache/spark/blob/master/ec2/spark_ec2.py, *however you will need to modify it so that it pulls this repo and branch instead of the mesos repo*.
+
+## Components
+
+Modules:
+
+* Spark in standalone mode
+* Tachyon
+* Hadoop DFS running on the instance's local disks.
+* Ganglia
+
+The above modules are configured to work together by these scripts. By default, they are pre-installed on the image.
+The default versions are: Spark 1.2, Tachyon 0.5, Protobuf 2.5.0 and Hadoop 2.4.1. These are compiled from source against each other to ensure compatibility. 
+You may change these versions, but be aware of the dependencies between them and with the configuration files in `./templates`.
+
+Additional software on the image:
+
+* Python 2.7 and SciPy libraries
+* R
+* Vowpal Wabbit
 
 
-The Spark cluster setup is guided by the values set in `ec2-variables.sh`.`setup.sh`
-first performs basic operations like enabling ssh across machines, mounting ephemeral
-drives and also creates files named `/root/spark-ec2/masters`, and `/root/spark-ec2/slaves`.
-Following that every module listed in `MODULES` is initialized. 
+## Usage
 
-To add a new module, you will need to do the following:
+Build the image according to `./packer/README.MD`
+ 
+Pass the new image id to the modified `spark_ec2.py` using the `--ami` argument.   
 
-  a. Create a directory with the module's name
-  
-  b. Optionally add a file named `init.sh`. This is called before templates are configured 
-and can be used to install any pre-requisites.
+## Details
 
-  c. Add any files that need to be configured based on the cluster setup to `templates/`.
-  The path of the file determines where the configured file will be copied to. Right now
-  the set of variables that can be used in a template are
-  
-      {{master_list}}
-      {{active_master}}
-      {{slave_list}}
-      {{zoo_list}}
-      {{cluster_url}}
-      {{hdfs_data_dirs}}
-      {{mapred_local_dirs}}
-      {{spark_local_dirs}}
-      {{default_spark_mem}}
-      {{spark_worker_instances}}
-      {{spark_worker_cores}}
-      {{spark_master_opts}}
-      
-   You can add new variables by modifying `deploy_templates.py`
-   
-   d. Add a file named `setup.sh` to launch any services on the master/slaves. This is called
-   after the templates have been configured. You can use the environment variables `$SLAVES` to
-   get a list of slave hostnames and `/root/spark-ec2/copy-dir` to sync a directory across machines.
-      
-   e. Modify https://github.com/mesos/spark/blob/master/ec2/spark_ec2.py to add your module to
-   the list of enabled modules.
+This assumes you are familiar with how [spark-ec2](https://github.com/mesos/spark-ec2) works.
+
+Notes:
+
+* The modules' `init.sh` scripts can be run as part of the image build. They are always run at cluster deploy time. They will the situation and act appropriately.  
+

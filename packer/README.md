@@ -1,16 +1,27 @@
-# Spark Packer Scripts
+# Spark Data Science Packer Scripts
 
-These scripts use [Packer](http://www.packer.io/) to create and register a set of AMIs that include all the software we need to quickly launch Spark clusters on EC2.
+These scripts were derived from [work done here](from https://github.com/nchammas/spark-ec2/tree/packer)
 
-These scripts create and register AMIs across the various axes of interest like AMI virtualization type and EC2 region, and on completion they update the AMI IDs in `ami-list/` automatically.
+These scripts use [Packer](http://www.packer.io/) to create and register an AMI that includes all the software needed to quickly launch a Spark based data science cluster on EC2.
 
-They use the [latest US East, EBS-backed Amazon Linux AMIs](http://aws.amazon.com/amazon-linux-ami/) as a base. The generated AMIs will be registered under the Amazon account associated with the AWS credentials set in the OS's environment.
+The base operating system is the latest Centos 6 minimal AMI, rather than Amazon Linux.
+ 
+The image includes common data science tools, including
+ * R (TODO add common data science libraries)
+ * Python 2.7 and all SciPy libraries
+ * Vowpal Wabbit
 
-In the near future, these scripts will be extended to support generating Spark images on other platforms like Docker and GCE.
+To speed up cluster launches, most of the epark-ec2 modules are also installed on the image by default.  
 
 ## Usage
 
-Just call this script:
+See / modify the following file to control software versions, as well as which modules will be installed on the image:
+
+``` 
+image-variables.sh
+```
+
+Then just call this script:
 
 ```
 ./build_spark_amis.sh
@@ -18,39 +29,13 @@ Just call this script:
 
 Note that you can call this script from any working directory and it will work.
 
+You can then use the resulting image by passing it to the ec2/spark_ec2.py script (in the spark github repo) using the --ami argument. Please note that the image is likely not compatible with the 
+configuration in the original spark-ec2 scripts. You should therefore use those in this repo. This may require modification of spark_ec2.py to point to this repo.   
+
 ## Generated AMIs
 
-Using Packer, these scripts create one EBS-backed AMI for every combination of the following attributes in parallel, for a total of 32 AMIs (2 × 2 × 8). Instance store AMIs are currently not covered.
-
-### Base vs. Spark Pre-Installed
-
-1. Base AMI
-  * OS security patches
-  * Python 2.7
-  * Ganglia
-  * Useful tools like `pssh`
-2. Version-specific Spark AMI
-  * Base AMI + a specific version of Spark and Hadoop installed
-
-### AMI Virtualization Type
-
-1. Hardware Virtual Machine (HVM)
-2. Paravirtual (PV)
-
-### EC2 Region
-
-All [supported EC2 regions](http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html) which, as of Fall 2014, are:
-
-1. `ap-northeast-1`
-2. `ap-southeast-1`
-3. `ap-southeast-2`
-5. `eu-west-1`
-6. `sa-east-1`
-7. `us-east-1`
-8. `us-west-1`
-9. `us-west-2`
-
-We currently don't support the `cn-north-1` or `eu-central-1` regions, as they require separate AWS credentials. (Note: This is definitely true for China; not sure about EU Central.)
+Generated images are EBS-backed.
+Currently, only Hardware Virtual Machine (HVM) virtualisation is implemented. This covers the majority of recent instance types. Paravirtual (PV) is easily added. 
 
 # Prerequisites
 
