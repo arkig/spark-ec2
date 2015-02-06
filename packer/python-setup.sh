@@ -13,6 +13,9 @@ set -u
 
 # TODO check ${PYTHON_VERSION} is 2.7.x
 
+# Prerequisites
+# -------------
+
 # For scipy optimisations
 sudo yum install -y gcc-gfortran blas-devel lapack-devel atlas-devel
 
@@ -31,6 +34,8 @@ sudo yum install -y libpng-devel
 
 
 # Install Python from source
+# --------------------------
+
 cd /tmp
 wget http://python.org/ftp/python/${PYTHON_VERSION}/Python-${PYTHON_VERSION}.tar.xz
 tar xf Python-${PYTHON_VERSION}.tar.xz
@@ -53,7 +58,9 @@ sudo env "PATH=$PATH" python2.7 ez_setup.py
 # Install pip using the newly installed setuptools:
 sudo env "PATH=$PATH" easy_install-2.7 pip
 
-# Packages
+# Install Scientific Packages
+# ---------------------------
+
 # See: http://www.scipy.org/stackspec.html#stackspec
 sudo env "PATH=$PATH" pip2.7 install numpy
 sudo env "PATH=$PATH" pip2.7 install psutil
@@ -73,28 +80,11 @@ sudo env "PATH=$PATH" pip2.7 install matplotlib
 
 #sudo env "PATH=$PATH" pip2.7 install Theano
 
+# Install Other Packages
+# ----------------------
+
+sudo env "PATH=$PATH" pip2.7 install awscli
+
+
 rm -rf /tmp/*
-
-
-# ---- OLD -----
-
-# go get python27 etc..
-#sudo yum install -y centos-release-SCL
-
-# Python 2.7
-#sudo yum install -y python27 python27-devel
-
-#urgh...
-#scl enable python27 bash
-
-# pipe below into above?
-#sudo curl https://bitbucket.org/pypa/setuptools/raw/bootstrap/ez_setup.py | sudo python27
-
-#sudo easy_install-2.7 pip
-#sudo pip2.7 install numpy
-#sudo pip2.7 install psutil
-#sudo pip2.7 install tornado
-#sudo pip2.7 install scipy
-#sudo pip2.7 install matplotlib
-
 
