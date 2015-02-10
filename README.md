@@ -39,7 +39,7 @@ Data science software on the image:
 
 ## Usage
 
-Build the image according to [these instructions](./packer/README.MD).
+Build the image according to [the README.md here](./packer).
 
 Obtain a recent version of `spark/ec2/` from [Spark](https://github.com/apache/spark). Make sure it supports the 
 `--spark-ec2-git-repo` and `--spark-ec2-git-branch` arguments. This should be the case in `master` and in the (yet to be released as of this writing) 1.4 and later releases. 
