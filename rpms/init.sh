@@ -24,6 +24,7 @@ if [ -d /root/rpms ]; then
   if [[ -e /root/rpms/init.sh ]]; then
 
     echo "Initialising RPMs with root/rpms/init.sh..."
+    chmod u+x /root/rpms/init.sh
     /root/rpms/init.sh
 
     # Don't do this if we're running this as part of image creation.
@@ -31,7 +32,7 @@ if [ -d /root/rpms ]; then
       echo "Initialising RPMs on other cluster nodes..."
       for node in $SLAVES $OTHER_MASTERS; do
         echo -e "\n... rpms/init.sh on $node"
-        ssh -t -t $SSH_OPTS root@$node "/root/rpms/init.sh"
+        ssh -t -t $SSH_OPTS root@$node "chmod u+x /root/rpms/init.sh && /root/rpms/init.sh"
       done
       wait
     fi

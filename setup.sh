@@ -112,16 +112,16 @@ wait
 
 echo -e "\n===== Initializing modules ====="
 
-# Always include 'scala', 'rpms' and 'extra' modules if not defined as a work around
-# for older versions spark_ec2.py.
+# Always include 'scala' (first), 'rpms' and 'extra' modules (last)
+# if not defined as a work around for older versions spark_ec2.py.
 if [[ ! $MODULES =~ *scala* ]]; then
   MODULES=$(printf "%s\n%s\n" "scala" $MODULES)
 fi
 if [[ ! $MODULES =~ *rpms* ]]; then
-  MODULES=$(printf "%s\n%s\n" "rpms" $MODULES)
+  MODULES=$(printf "%s\n%s\n" $MODULES "rpms")
 fi
 if [[ ! $MODULES =~ *extra* ]]; then
-  MODULES=$(printf "%s\n%s\n" "extra" $MODULES)
+  MODULES=$(printf "%s\n%s\n" $MODULES "extra")
 fi
 
 for module in $MODULES; do
