@@ -8,9 +8,9 @@ There are two components to this:
 * Automatically build and register an AMI that is pre-configured as much as possible, starting with a CentOS 6 minimal image.
 * Deploy and configure a cluster using this AMI
 
-This work is based on https://github.com/mesos/spark-ec2 (and forks). Please see the README.md there for additional details. 
+This work is based on [spark-ec2](https://github.com/mesos/spark-ec2) and forks. Please see the README.md there for additional details. 
 
-These scripts are currently compatible with https://github.com/apache/spark/blob/master/ec2/spark_ec2.py, **however you will need to modify it so that it pulls this repo and branch instead of the mesos repo**.
+As of this writing, these scripts are compatible with recent versions of [spark/ec2](https://github.com/apache/spark/blob/master/ec2/).
 
 ## Components
 
@@ -20,11 +20,15 @@ Modules:
 * Tachyon
 * Hadoop DFS running on the instances' local disks.
 * Ganglia
-* Any RPMs (for additional software)
 
 The above modules are configured to work together by these scripts. By default, they are pre-installed on the image in order to optimise cluster start time.
 The default versions are: Spark 1.2, Tachyon 0.5, Protobuf 2.5.0 and Hadoop 2.4.1. These are compiled from source against each other to ensure compatibility. 
-You may change these versions or use pre-built distributions, but be aware of the dependencies between them and with the configuration files in `./templates`.
+You may change these versions or use pre-built distributions, but be aware of the dependencies between them and with the configuration files in [./templates](./templates).
+
+Generic modules allowing further customisation:
+
+* [rpms](./rpms) - supports RPMs (optional - for additional software)
+* [extra](./extra) - supports extra `init.sh`, `setup.sh` and `test.sh` scripts by delegation (optional - for greater flexibility)
 
 Data science software on the image:
 
@@ -35,9 +39,18 @@ Data science software on the image:
 
 ## Usage
 
-Build the image according to `./packer/README.MD`
+Build the image according to [these instructions](./packer/README.MD).
+
+Obtain a recent version of `spark/ec2/` from [Spark](https://github.com/apache/spark). Make sure it supports the 
+`--spark-ec2-git-repo` and `--spark-ec2-git-branch` arguments. This should be the case in `master` and in the (yet to be released as of this writing) 1.4 and later releases. 
+If it does not (or you choose a different version), you will need to modify `spark_ec2.py` to clone this repo and branch instead of the hard coded one. 
  
-Pass the new image id to the modified (see above) `spark_ec2.py` using the `--ami` argument.   
+Run `spark_ec2.py`, being sure to pass the new image id using the `--ami` argument and pointing `--spark-ec2-git-repo` and `--spark-ec2-git-branch` at this repo and branch.
+
+### Advanced
+
+To make use of the `rpms` or `extra` modules, first place files in `spark/ec2/deploy.generic/root/rpms/` or `spark/ec2/deploy.generic/root/extra/` as appropriate. 
+Requires `[SPARK-5641]`.
 
 ## Details
 
