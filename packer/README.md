@@ -27,7 +27,9 @@ Then just call this script:
 
 Note that you can call this script from any working directory and it will work.
 
-Please note that the image is likely not compatible with the configuration in the original `spark-ec2` scripts.
+You should expect it to take a couple of hours to complete. 
+
+Please note that the resulting image is likely not compatible with the configuration in the original `spark-ec2` scripts.
 
 ## Generated AMIs
 
