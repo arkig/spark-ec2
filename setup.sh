@@ -32,6 +32,7 @@ SSH_OPTS="-o StrictHostKeyChecking=no -o ConnectTimeout=5"
 
 # Defaults in case these aren't in ec2-variables yet
 TEST_MODULES=${TEST_MODULES-true}
+VERBOSE=${VERBOSE-false}
 
 if [[ "x$JAVA_HOME" == "x" ]] ; then
     echo "Expected JAVA_HOME to be set in .bash_profile!"
@@ -112,6 +113,9 @@ wait
 
 echo -e "\n===== Initializing modules ====="
 
+# TODO consider splitting MODULES into INIT_MODULES, SETUP_MODULES, etc
+# for more control over what runs AND and possible ordering dependencies
+
 # Always include 'scala' (first), 'rpms' and 'extra' modules (last)
 # if not defined as a work around for older versions spark_ec2.py.
 if [[ ! $MODULES =~ *scala* ]]; then
@@ -125,11 +129,11 @@ if [[ ! $MODULES =~ *extra* ]]; then
 fi
 
 for module in $MODULES; do
-  echo -e "\n----- Initializing $module -----"
   if [[ -e $module/init.sh ]]; then
+    echo -e "\n----- Initializing $module -----"
     source $module/init.sh
-  else
-    echo "nothing to do"
+  elif $VERBOSE; then
+    echo -e "\n----- Skipping $module -----"
   fi
   cd /root/spark-ec2  # guard against init.sh changing the cwd
 done
@@ -142,13 +146,12 @@ echo -e "\n===== Creating local config files ====="
 echo -e "\n===== Setting up modules ====="
 
 for module in $MODULES; do
-  echo -e "\n----- Setting up $module -----"
   if [[ -e $module/setup.sh ]]; then
+    echo -e "\n----- Setting up $module -----"
     source $module/setup.sh
-  else
-    echo "nothing to do"
+  elif $VERBOSE; then
+    echo -e "\n----- Skipping $module -----"
   fi
-  sleep 1
   cd /root/spark-ec2  # guard against setup.sh changing the cwd
 done
 
@@ -156,16 +159,28 @@ done
 if $TEST_MODULES; then
     echo -e "\n===== Testing modules ====="
     for module in $MODULES; do
-      echo -e "\n----- Testing $module -----"
       if [[ -e $module/test.sh ]]; then
+        echo -e "\n----- Testing $module -----"
         source $module/test.sh
-      else
-        echo "nothing to do"
+      elif $VERBOSE; then
+        echo -e "\n----- Skipping $module -----"
       fi
-      sleep 1
       cd /root/spark-ec2  # guard against setup.sh changing the cwd
     done
 fi
+
+
+echo -e "\n===== Running modules ====="
+for module in $MODULES; do
+  if [[ -e $module/run.sh ]]; then
+    echo -e "\n----- Running $module -----"
+    source $module/run.sh
+  elif $VERBOSE; then
+    echo -e "\n----- Skipping $module -----"
+  fi
+  cd /root/spark-ec2  # guard against setup.sh changing the cwd
+done
+
 
 echo -e "\n========== Services =========="
 MASTER=`cat masters | head -n1`

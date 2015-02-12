@@ -33,3 +33,5 @@ sleep 20
 
 echo "Start workers..."
 $BIN_FOLDER/start-slaves.sh
+
+sleep 1

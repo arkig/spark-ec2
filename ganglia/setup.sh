@@ -22,3 +22,5 @@ done
 
 # Start http server to serve ganglia
 /etc/init.d/httpd restart
+
+sleep 1

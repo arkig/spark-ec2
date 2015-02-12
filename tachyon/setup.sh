@@ -8,3 +8,5 @@ echo "Deploying Tachyon config files..."
 sleep 1
 
 /root/tachyon/bin/tachyon-start.sh all Mount
+
+sleep 1

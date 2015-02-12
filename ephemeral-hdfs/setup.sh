@@ -38,12 +38,13 @@ echo "Starting ephemeral HDFS..."
 $EPHEMERAL_HDFS/sbin/start-dfs.sh
 #$EPHEMERAL_HDFS/bin/start-dfs.sh
 
-sleep 1
+sleep 2
 
 # Note: doing this after starting hdfs. Will fail otherwise.
 # add usernames
 $EPHEMERAL_HDFS/bin/hdfs dfs -mkdir /user
 $EPHEMERAL_HDFS/bin/hdfs dfs -mkdir /user/root
 
+sleep 1
 
 popd
