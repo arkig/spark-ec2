@@ -29,7 +29,7 @@ Generic modules for customisation:
 * [extra](./extra) - supports extra `init.sh`, `setup.sh` and `test.sh` scripts by delegation (optional - for even greater flexibility)
 
 Spark, Tachyon, HDFS and Ganglia are configured to work together by these scripts. By default, they are pre-installed on the image in order to optimise cluster start time.
-The default versions are: Spark 1.2, Tachyon 0.5, Protobuf 2.5.0 and Hadoop 2.4.1. These are *compiled from source against each other* to ensure compatibility and to get the 
+The default versions are: `Spark 1.2`, `Tachyon 0.5`, `Protobuf 2.5.0` and `Hadoop 2.4.1`. These are *compiled from source against each other* to ensure compatibility and to get the 
 native hadoop libraries. 
 You may change these versions or use pre-built distributions, but be aware of the dependencies between them and with the configuration files in [./templates](./templates).
 
@@ -58,8 +58,8 @@ Run `spark_ec2.py`, being sure to pass the new image id using the `--ami` argume
 
 ### Advanced
 
-To make use of the `rpms` or `extra` modules, first place files in `spark/ec2/deploy.generic/root/rpms/` or `spark/ec2/deploy.generic/root/extra/` as appropriate. 
-They will be copied to the cluster when you run `spark_ec2.py`.  
+To make use of the `rpms` or `extra` modules, first place files in `/some_path/root/rpms/` or `/some_path/root/extra/` as appropriate. Then 
+use `--deploy-root-dir /some_path`, which will copy them to the cluster, where they will be detected and used.
 **NOTE**: Requires `[SPARK-5641]`.
 
 ## Details

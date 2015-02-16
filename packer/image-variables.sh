@@ -2,14 +2,16 @@
 
 # One location for configuring these for:
 # - manual image creation / testing
-# - use in packer (via an ugly ugly hack)
+# - use in packer (via a hack)
 
 echo "Setting image variables"
 
 export PARALLEL_VERSION=${PARALLEL_VERSION-"20141122"}
 
-# Oracle java
-export ORACLE_JAVA_VERSION=${ORACLE_JAVA_VERSION-"7u75"}
+# NOTE: Use this only iff you fully understand the consequences.
+#       See java-setup.sh
+#### export ORACLE_JAVA_VERSION=${ORACLE_JAVA_VERSION-"7u75"}
+
 # Note: OpenJDK is used iff ORACLE_JAVA_VERSION is not set.
 export OPENJDK_JAVA_VERSION=${OPENJDK_JAVA_VERSION-"1.7.0"}
 

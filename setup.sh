@@ -11,6 +11,11 @@ source /root/.bash_profile
 # Load the cluster variables set by the deploy script
 source ec2-variables.sh
 
+# Load any user provided cluster variables or overrides
+if [[ -e ec2-user-variables.sh ]]; then
+    source ec2-user-variables.sh
+fi
+
 # Set hostname based on EC2 private DNS name, so that it is set correctly
 # even if the instance is restarted with a different private DNS name
 PRIVATE_DNS=`wget -q -O - http://instance-data.ec2.internal/latest/meta-data/local-hostname`
@@ -30,7 +35,7 @@ OTHER_MASTERS=`cat masters | sed '1d'`
 SLAVES=`cat slaves`
 SSH_OPTS="-o StrictHostKeyChecking=no -o ConnectTimeout=5"
 
-# Defaults in case these aren't in ec2-variables yet
+# Defaults in case these aren't set in ec2-variables or ec2-user-variables
 TEST_MODULES=${TEST_MODULES-true}
 VERBOSE=${VERBOSE-false}
 

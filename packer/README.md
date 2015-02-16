@@ -5,7 +5,7 @@ These scripts were derived from [work done here](https://github.com/nchammas/spa
 These scripts use [Packer](http://www.packer.io/) to create and register an AMI that includes all the software needed to quickly launch a Spark based data science cluster on EC2.
 
 The base operating system is the latest Centos 6 minimal AMI, rather than Amazon Linux. 
-It has been configured to work on EC2 and includes a good selection of dev tools for C++, Java and Scala, including the Oracle JDK.
+It has been configured to work on EC2 and includes a good selection of dev tools for C++, Java and Scala.
  
 The image includes common data science tools such as R, Python, SciPy, vowpal wabbit. Most are built from source. 
 
