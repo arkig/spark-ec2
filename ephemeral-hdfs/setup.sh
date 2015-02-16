@@ -4,6 +4,9 @@ EPHEMERAL_HDFS=/root/ephemeral-hdfs
 
 pushd /root/spark-ec2/ephemeral-hdfs
 
+# Just in case it's running
+$EPHEMERAL_HDFS/sbin/stop-dfs.sh
+
 #TODO PUBLIC_DNS appears to be broken
 
 # Set hdfs url to make it easier
@@ -38,6 +41,7 @@ else
   # So....
   $EPHEMERAL_HDFS/bin/hdfs namenode -format
 fi
+
 
 echo "Starting ephemeral HDFS..."
 # This is different depending on version. Simple hack: just try both.

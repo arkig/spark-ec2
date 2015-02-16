@@ -19,15 +19,15 @@ See/modify the following file to control software versions, as well as which mod
 image-variables.sh
 ```
 
-Then just call this script:
+You may also need to alter `spark-packer.json`, for example to change the region.
+
+Then call this script (you can call this script from any working directory and it will work):
 
 ```
 ./build_spark_amis.sh
 ```
 
-Note that you can call this script from any working directory and it will work.
-
-You should expect it to take a couple of hours to complete. 
+You should expect it to take a couple of hours to complete. Check that the AMI is registered in your AWS account (for the region).  
 
 Please note that the resulting image is likely not compatible with the configuration in the original `spark-ec2` scripts.
 
