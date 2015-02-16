@@ -13,6 +13,7 @@ source ec2-variables.sh
 
 # Load any user provided cluster variables or overrides
 if [[ -e ec2-user-variables.sh ]]; then
+    echo "Found ec2-user-variables.sh, sourcing it."
     source ec2-user-variables.sh
 fi
 
