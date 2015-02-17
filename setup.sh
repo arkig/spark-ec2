@@ -8,14 +8,43 @@ cd /root/spark-ec2
 # Load the environment variables specific to this AMI
 source /root/.bash_profile
 
+#set -u
+
 # Load the cluster variables set by the deploy script
 source ec2-variables.sh
+
+# Always include 'scala' (first), 'rpms' and 'extra' modules (last)
+# if not defined as a work around for older versions spark_ec2.py.
+if [[ ! $MODULES =~ *scala* ]]; then
+  MODULES=$(printf "%s\n%s\n" "scala" $MODULES)
+fi
+if [[ ! $MODULES =~ *rpms* ]]; then
+  MODULES=$(printf "%s\n%s\n" $MODULES "rpms")
+fi
+if [[ ! $MODULES =~ *extra* ]]; then
+  MODULES=$(printf "%s\n%s\n" $MODULES "extra")
+fi
 
 # Load any user provided cluster variables or overrides
 if [[ -e ec2-user-variables.sh ]]; then
     echo "Found ec2-user-variables.sh, sourcing it."
     source ec2-user-variables.sh
 fi
+
+# Set defaults in case these aren't provided in ec2-variables or ec2-user-variables
+VERBOSE=${VERBOSE-true}
+# Allowing separation of these alows finer control and supports dependencies.
+INIT_MODULES=${INIT_MODULES-$MODULES}
+SETUP_MODULES=${SETUP_MODULES-$MODULES}
+TEST_MODULES=${TEST_MODULES-$MODULES}
+RUN_MODULES=${RUN_MODULES-$MODULES}
+
+echo "MODULES=$MODULES"
+echo "INIT_MODULES =$INIT_MODULES"
+echo "SETUP_MODULES=$SETUP_MODULES"
+echo "TEST_MODULES =$TEST_MODULES"
+echo "RUN_MODULES  =$RUN_MODULES"
+
 
 # Set hostname based on EC2 private DNS name, so that it is set correctly
 # even if the instance is restarted with a different private DNS name
@@ -36,10 +65,6 @@ OTHER_MASTERS=`cat masters | sed '1d'`
 SLAVES=`cat slaves`
 SSH_OPTS="-o StrictHostKeyChecking=no -o ConnectTimeout=5"
 
-# Defaults in case these aren't set in ec2-variables or ec2-user-variables
-TEST_MODULES=${TEST_MODULES-true}
-VERBOSE=${VERBOSE-false}
-
 if [[ "x$JAVA_HOME" == "x" ]] ; then
     echo "Expected JAVA_HOME to be set in .bash_profile!"
     exit 1
@@ -56,7 +81,7 @@ echo "Setting executable permissions on scripts..."
 find . -regex "^.+.\(sh\|py\)" | xargs chmod a+x
 
 echo "Running setup-slave on master to mount filesystems, etc..."
-source ./setup-slave.sh
+./setup-slave.sh
 
 echo -e "\n===== Approving SSH keys ====="
 
@@ -116,25 +141,8 @@ for node in $SLAVES $OTHER_MASTERS; do
 done
 wait
 
-
 echo -e "\n===== Initializing modules ====="
-
-# TODO consider splitting MODULES into INIT_MODULES, SETUP_MODULES, etc
-# for more control over what runs AND and possible ordering dependencies
-
-# Always include 'scala' (first), 'rpms' and 'extra' modules (last)
-# if not defined as a work around for older versions spark_ec2.py.
-if [[ ! $MODULES =~ *scala* ]]; then
-  MODULES=$(printf "%s\n%s\n" "scala" $MODULES)
-fi
-if [[ ! $MODULES =~ *rpms* ]]; then
-  MODULES=$(printf "%s\n%s\n" $MODULES "rpms")
-fi
-if [[ ! $MODULES =~ *extra* ]]; then
-  MODULES=$(printf "%s\n%s\n" $MODULES "extra")
-fi
-
-for module in $MODULES; do
+for module in $INIT_MODULES; do
   if [[ -e $module/init.sh ]]; then
     echo -e "\n----- Initializing $module -----"
     source $module/init.sh
@@ -146,12 +154,11 @@ done
 
 echo -e "\n===== Creating local config files ====="
 
-# TODO: Move configuring templates to a per-module ?
+# Move configuring templates to a per-module?
 ./deploy_templates.py
 
 echo -e "\n===== Setting up modules ====="
-
-for module in $MODULES; do
+for module in $SETUP_MODULES; do
   if [[ -e $module/setup.sh ]]; then
     echo -e "\n----- Setting up $module -----"
     source $module/setup.sh
@@ -161,23 +168,19 @@ for module in $MODULES; do
   cd /root/spark-ec2  # guard against setup.sh changing the cwd
 done
 
-
-if $TEST_MODULES; then
-    echo -e "\n===== Testing modules ====="
-    for module in $MODULES; do
-      if [[ -e $module/test.sh ]]; then
-        echo -e "\n----- Testing $module -----"
-        source $module/test.sh
-      elif $VERBOSE; then
-        echo -e "\n----- Skipping $module -----"
-      fi
-      cd /root/spark-ec2  # guard against setup.sh changing the cwd
-    done
-fi
-
+echo -e "\n===== Testing modules ====="
+for module in $TEST_MODULES; do
+  if [[ -e $module/test.sh ]]; then
+    echo -e "\n----- Testing $module -----"
+    source $module/test.sh
+  elif $VERBOSE; then
+    echo -e "\n----- Skipping $module -----"
+  fi
+  cd /root/spark-ec2  # guard against setup.sh changing the cwd
+done
 
 echo -e "\n===== Running modules ====="
-for module in $MODULES; do
+for module in $RUN_MODULES; do
   if [[ -e $module/run.sh ]]; then
     echo -e "\n----- Running $module -----"
     source $module/run.sh

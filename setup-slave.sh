@@ -1,16 +1,30 @@
 #!/bin/bash
 
+echo "Setting up slave on `hostname`..."
+
+# Make sure we are in the spark-ec2 directory
+cd /root/spark-ec2
+
+# Must source these, because this script is run directly on slaves.
+# This is not strictly necessary, but it allows variables to be overriden.
+source ec2-variables.sh
+if [[ -e ec2-user-variables.sh ]]; then
+    source ec2-user-variables.sh
+fi
+
+# Defaults
+VERBOSE=${VERBOSE-false}
+EXT_MOUNT_OPTS=${EXT_MOUNT_OPTS-"defaults,noatime,nodiratime"}
+DEVICE_PREFIX=${DEVICE_PREFIX-"xvd"}
+XFS_MOUNT_OPTS=${XFS_MOUNT_OPTS-"defaults,noatime,nodiratime,allocsize=8m"}
+
+
 # Disable Transparent Huge Pages (THP)
 # THP can result in system thrashing (high sys usage) due to frequent defrags of memory.
 # Most systems recommends turning THP off.
 if [[ -e /sys/kernel/mm/transparent_hugepage/enabled ]]; then
   echo never > /sys/kernel/mm/transparent_hugepage/enabled
 fi
-
-# Make sure we are in the spark-ec2 directory
-cd /root/spark-ec2
-
-source ec2-variables.sh
 
 # Set hostname based on EC2 private DNS name, so that it is set correctly
 # even if the instance is restarted with a different private DNS name
@@ -19,12 +33,10 @@ hostname $PRIVATE_DNS
 echo $PRIVATE_DNS > /etc/hostname
 HOSTNAME=$PRIVATE_DNS  # Fix the bash built-in hostname variable too
 
-echo "Setting up slave on `hostname`..."
 
-instance_type=$(curl http://169.254.169.254/latest/meta-data/instance-type 2> /dev/null)
-echo "Instance type: $instance_type"
+#instance_type=$(curl http://169.254.169.254/latest/meta-data/instance-type 2> /dev/null)
+#echo "Instance type: $instance_type"
 
-EXT_MOUNT_OPTS="defaults,noatime,nodiratime"
 function setup_instance_volume {
 
   device=$1
@@ -60,7 +72,7 @@ function setup_instance_volume {
     # Make data dirs writable by non-root users, such as CDH's hadoop user
     chmod -R a+w $mount_point
 
-  else
+  elif $VERBOSE; then
     echo "$device does not exist."
   fi
 }
@@ -68,10 +80,9 @@ function setup_instance_volume {
 # This will hopefully work for most hvm instance types.
 echo "Setting up ephemeral instance volumes..."
 
-DEVICE_PREFIX="xvd"
 root_device="$(mount | grep 'on / type'| awk '{print $1}')"
 all_disk_devs=(/dev/$DEVICE_PREFIX[a-z])
-echo $root_device
+echo "Detected root device as: $root_device"
 let count=0
 for disk_dev in ${all_disk_devs[@]}; do
     if [[ $root_device != $disk_dev* ]]; then
@@ -88,7 +99,6 @@ for disk_dev in ${all_disk_devs[@]}; do
 done
 
 
-XFS_MOUNT_OPTS="defaults,noatime,nodiratime,allocsize=8m"
 function setup_ebs_volume {
   device=$1
   mount_point=$2
@@ -114,7 +124,7 @@ function setup_ebs_volume {
         chmod -R a+w $mount_point
       fi
     fi
-  else
+  elif $VERBOSE; then
     echo "$device does not exist."
   fi
 }
