@@ -26,7 +26,7 @@ spark-ec2 modules:
 Generic modules for customisation:
 
 * [rpms](./rpms) - supports RPM installation and initialisation (optional - for additional software)
-* [extra](./extra) - supports extra `init.sh`, `setup.sh` and `test.sh` scripts by delegation (optional - for even greater flexibility)
+* [extra](./extra) - supports extra `init.sh`, `setup.sh`, `test.sh` and `run.sh` scripts by delegation (optional - for even greater flexibility)
 
 Spark, Tachyon, HDFS and Ganglia are configured to work together by these scripts. By default, they are pre-installed on the image in order to optimise cluster start time.
 The default versions are: `Spark 1.2`, `Tachyon 0.5`, `Protobuf 2.5.0` and `Hadoop 2.4.1`. These are *compiled from source against each other* to ensure compatibility and to get the 
@@ -34,7 +34,8 @@ native hadoop libraries.
 You may change these versions or use pre-built distributions, but be aware of the dependencies between them and with the configuration files in [./templates](./templates).
 
 `rpms` and `extra` are generic modules. These allow you to further customise the cluster at deployment time without code changes.
-For example, install extra RPMs, install additional R libraries, install an entirely new module, etc...
+For example, install extra RPMs, install additional R libraries, install an entirely new module, upload (and even run) a Spark application, etc...
+
 **Aside**: In theory, it should also be possible to do this at image build time if you add an appropriate file provisioner in the packer configuration.  
 
 ### Data Science Software
@@ -59,8 +60,11 @@ Run `spark_ec2.py`, being sure to pass the new image id using the `--ami` argume
 ### Advanced
 
 To make use of the `rpms` or `extra` modules, first place files in `/some_path/root/rpms/` or `/some_path/root/extra/` as appropriate. Then 
-use `--deploy-root-dir /some_path`, which will copy them to the cluster, where they will be detected and used.
+use `--deploy-root-dir /some_path`, which will copy them to correct location on the cluster, where they will be detected and used.
 **NOTE**: Requires `[SPARK-5641]`.
+
+To override any variables used in cluster launch (e.g. variables in `setup.sh`, `setup-slave.sh`, module scripts,...), export them in a file called `ec2-user-variables.sh`, place it in `/some_path/root/spark-ec2/` and use `--deploy-root-dir` as above.
+For example, use this to define which modules to include and whether to test them.  
 
 ## Details
 
@@ -75,4 +79,5 @@ The primary structural differences are:
  Typically, these require information that is only available at deployment time, such as the list of masters and slaves, etc. 
  They should not be used to install software.  
 * The modules' optional `test.sh` scripts are run after all the setup is complete. They allow simple tests/checks of the cluster modules. 
+* The modules' optional `run.sh` scripts are run last. They are intended for running applications on the cluster.
 
