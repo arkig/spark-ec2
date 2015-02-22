@@ -94,7 +94,7 @@ for disk_dev in ${all_disk_devs[@]}; do
         setup_instance_volume $disk_dev $mount_point
         echo "$disk_dev $mount_point"
     else
-      echo "Skipping $disk_dev because it looks to be the root device $root_device"
+      echo "Skipping $disk_dev because it looks to be the root device."
     fi
 done
 
