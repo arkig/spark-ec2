@@ -32,7 +32,7 @@ sudo yum install -y dstat iotop strace sysstat htop perf
 echo "export PS1=\"\\u@\\h \\W]\\$ \"" >> ~/.bash_profile
 
 # Required because various install-from-source that we do will install here (e.g. parallel, etc)
-echo "export PATH=$PATH:/usr/local/bin" >> ~/.bash_profile
+echo "export PATH=\$PATH:/usr/local/bin" >> ~/.bash_profile
 set +u
 source ~/.bash_profile
 set -u
