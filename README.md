@@ -49,7 +49,7 @@ These are installed on the image, mostly from source:
 
 ## Usage
 
-Build the image according to [the README.md here](./packer).
+Build the image according to [the README.md here](./image-build).
 
 Obtain a recent version of `spark/ec2/` from [Spark](https://github.com/apache/spark) (clone it). Make sure it supports the 
 `--spark-ec2-git-repo` and `--spark-ec2-git-branch` arguments. This should be the case in `master` and in the (yet to be released as of this writing) 1.4 and later releases. 
