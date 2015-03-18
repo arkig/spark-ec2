@@ -21,6 +21,7 @@ spark-ec2 modules:
 * Spark in standalone mode (yarn not yet enabled)
 * Tachyon
 * Hadoop DFS running on the instances' local disks.
+* HDFS NFS Gateway
 * Ganglia cluster monitoring
 
 Generic modules for customisation:

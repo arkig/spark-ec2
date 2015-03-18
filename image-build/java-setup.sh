@@ -45,6 +45,7 @@ elif [ -n "$OPENJDK_JAVA_VERSION" ]; then
     #sudo yum --enablerepo='*-debug*' install -q -y java-${OPENJDK_JAVA_VERSION}-openjdk-debuginfo.x86_64
 
     echo "export JAVA_HOME=/usr/lib/jvm/java-${OPENJDK_JAVA_VERSION}" >> ~/.bash_profile
+    source ~/.bash_profile
 
 else
     echo "No Java version specified. Exiting"

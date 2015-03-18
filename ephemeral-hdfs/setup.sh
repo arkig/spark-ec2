@@ -17,6 +17,8 @@ echo "export HDFS_URL=$HDFS_URL" >> ~/.bash_profile
 echo "export EPHEMERAL_HDFS=$EPHEMERAL_HDFS" >> ~/.bash_profile
 echo "export PATH=\$PATH:\$EPHEMERAL_HDFS/bin:\$EPHEMERAL_HDFS/sbin" >> ~/.bash_profile
 
+source ~/.bash_profile
+
 echo "Running ephemeral HDFS setup-slave on master..."
 source ./setup-slave.sh
 
