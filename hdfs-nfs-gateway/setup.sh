@@ -1,13 +1,16 @@
 #!/bin/sh
 #
-# Set up HDFS NFS gateway for the primary HDFS.
-# (bin and sbin for that HDFS must be on path)
+# Set up HDFS NFS gateway for the primary HDFS (bin and sbin for that HDFS must be on path).
 #
 # See http://hadoop.apache.org/docs/r2.4.0/hadoop-project-dist/hadoop-hdfs/HdfsNfsGateway.html
 
+echo "Setting up hdfs-nfs gateway for this hdfs: $(which hadoop)"
+
+HADOOP_DAEMON=$(which hadoop-daemon.sh)
+
 # Stop anything that might be running
-sudo hadoop-daemon.sh stop nfs3
-sudo hadoop-daemon.sh stop portmap
+sudo $HADOOP_DAEMON stop nfs3
+sudo $HADOOP_DAEMON stop portmap
 
 # Restart
 # -------
@@ -18,13 +21,13 @@ sudo service rpcbind stop
 
 # Start package included portmap (needs root privileges):
 #sudo hadoop portmap
-sudo hadoop-daemon.sh start portmap
+sudo $HADOOP_DAEMON start portmap
 
 # Start mountd and nfsd.
 # No root privileges are required for this command. However, ensure that the user starting the
 # Hadoop cluster and the user starting the NFS gateway are same.
 #hadoop nfs3
-hadoop-daemon.sh start nfs3
+$HADOOP_DAEMON start nfs3
 
 sleep 2
 
