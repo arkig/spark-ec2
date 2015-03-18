@@ -13,9 +13,9 @@ $EPHEMERAL_HDFS/sbin/stop-dfs.sh
 HDFS_URL="hdfs://$PUBLIC_DNS:9000"
 echo "export HDFS_URL=$HDFS_URL" >> ~/.bash_profile
 
-# Add to path, so easy to interact with ephemeral hdfs on master
+# Add bin and sbin to path, so easy to interact with ephemeral hdfs on master
 echo "export EPHEMERAL_HDFS=$EPHEMERAL_HDFS" >> ~/.bash_profile
-echo "export PATH=\$PATH:\$EPHEMERAL_HDFS/bin" >> ~/.bash_profile
+echo "export PATH=\$PATH:\$EPHEMERAL_HDFS/bin:\$EPHEMERAL_HDFS/sbin" >> ~/.bash_profile
 
 echo "Running ephemeral HDFS setup-slave on master..."
 source ./setup-slave.sh

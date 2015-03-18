@@ -40,6 +40,10 @@ else
     # ... must enable at cloud.cfg level too
     sudo sed -i 's/disable_root.*/disable_root: 0/g' /etc/cloud/cloud.cfg
 
+    # For HDFS NFS gateway.
+    # Should already be installed, but lets do this anyway
+    sudo yum install -y nfs-utils nfs-utils-lib
+
 fi
 
 # Security udpates only
