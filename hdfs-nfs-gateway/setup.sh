@@ -44,7 +44,7 @@ HDFS_NFS_MOUNT="/hdfs_nfs"
 MNT_CMD="sudo mkdir -p $HDFS_NFS_MOUNT && sudo mount -t nfs -o vers=3,proto=tcp,nolock,rsize=1048576,wsize=65536 $SERVER:/ $HDFS_NFS_MOUNT"
 
 echo "Mounting HDFS NFS (running on $SERVER) on master..."
-$MNT_CMD
+eval "$MNT_CMD"
 
 echo "Mounting HDFS NFS (running on $SERVER) on other cluster nodes..."
 for node in $SLAVES $OTHER_MASTERS; do
