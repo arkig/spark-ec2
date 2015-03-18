@@ -38,16 +38,17 @@ sleep 2
 # We know that namenode (and this script) is running on master. So:
 SERVER=$(hostname)
 
+HDFS_NFS_MOUNT="/hdfs_nfs"
+
 # Note: rsize and wsize based on dfs.nfs.rtmax and dfs.nfs.wtmax hadoop properties
-MNT_CMD="sudo mount -t nfs -o vers=3,proto=tcp,nolock,rsize=1048576,wsize=65536 $SERVER:/  /hdfs_nfs"
+MNT_CMD="sudo mkdir -p $HDFS_NFS_MOUNT && sudo mount -t nfs -o vers=3,proto=tcp,nolock,rsize=1048576,wsize=65536 $SERVER:/ $HDFS_NFS_MOUNT"
 
 echo "Mounting HDFS NFS (running on $SERVER) on master..."
-sudo mkdir -p /hdfs_nfs
 $MNT_CMD
 
 echo "Mounting HDFS NFS (running on $SERVER) on other cluster nodes..."
 for node in $SLAVES $OTHER_MASTERS; do
   echo "... $node"
-  ssh -t -t $SSH_OPTS root@$node "sudo mkdir -p /hdfs_nfs" & "$MNT_CMD" & sleep 0.1
+  ssh -t -t $SSH_OPTS root@$node "$MNT_CMD & sleep 0.3"
 done
 wait

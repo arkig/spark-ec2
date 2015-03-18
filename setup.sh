@@ -190,6 +190,9 @@ for module in $RUN_MODULES; do
   cd /root/spark-ec2  # guard against setup.sh changing the cwd
 done
 
+echo -e "\n========== Nodes =========="
+echo "MASTERS: $MASTERS"
+echo "SLAVES:  $SLAVES"
 
 echo -e "\n========== Services =========="
 MASTER=`cat masters | head -n1`
