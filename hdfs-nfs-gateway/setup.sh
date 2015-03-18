@@ -49,6 +49,6 @@ eval "$MNT_CMD"
 echo "Mounting HDFS NFS (running on $SERVER) on other cluster nodes..."
 for node in $SLAVES $OTHER_MASTERS; do
   echo "... $node"
-  ssh -t -t $SSH_OPTS root@$node "$MNT_CMD & sleep 0.3"
+  ssh -t $SSH_OPTS root@$node "$MNT_CMD"
 done
 wait
