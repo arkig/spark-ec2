@@ -191,12 +191,16 @@ for module in $RUN_MODULES; do
 done
 
 echo -e "\n========== Nodes =========="
-echo "MASTERS: $MASTERS"
-echo "SLAVES:  $SLAVES"
+echo "MASTERS:"
+echo "$MASTERS"
+echo ""
+echo "SLAVES:"
+echo "$SLAVES"
 
 echo -e "\n========== Services =========="
 MASTER=`cat masters | head -n1`
-echo "Spark:         http://$MASTER:8080"
+echo "Spark Master:  http://$MASTER:8080"
+echo "Spark Jobs:    http://$MASTER:4040/jobs/"
 echo "Tachyon:       http://$MASTER:19999"
 echo "HDFS Namenode: http://$MASTER:50070"
 echo "Ganglia:       http://$MASTER:5080/ganglia"

@@ -60,12 +60,26 @@ Run `spark_ec2.py`, being sure to pass the new image id using the `--ami` argume
 
 ### Advanced
 
+#### Using rpms and extra modules
+
 To make use of the `rpms` or `extra` modules, first place files in `/some_path/root/rpms/` or `/some_path/root/extra/` as appropriate. Then 
-use `--deploy-root-dir /some_path`, which will copy them to correct location on the cluster, where they will be detected and used.
+use `--deploy-root-dir /some_path`, which will copy them to correct location on the cluster, where they will be detected and used. 
+
+For example, a `/some_path/root/rpms/init.sh` script can be used to do any post rpm installation initialisation, such as adding an entry to `.bash_profile` to update  `PATH`.
+The `rpms` module doesn't currently support `setup.sh`, `test.sh` or `run.sh` - but you can use `extra` for this. 
+
+The `extra` module delegates, so just place any of `init.sh`, `setup.sh`, `test.sh` or `run.sh` in `/some_path/root/extra/`. Since these files are `source`d, all 
+variables are available - so you can achieve behaviour identical to what you would get if you added a new module to `spark-ec2`. 
+Example use cases: `setup.sh` is useful to copy data from s3 onto hdfs, while `run.sh` is useful to launch a Spark application. 
+
 **NOTE**: Requires `[SPARK-5641]`.
 
-To override any variables used in cluster launch (e.g. variables in `setup.sh`, `setup-slave.sh`, module scripts,...), export them in a file called `ec2-user-variables.sh`, place it in `/some_path/root/spark-ec2/` and use `--deploy-root-dir` as above.
-For example, use this to define which modules to include and whether to test them.  
+#### Overriding Default Behaviour
+
+To override any variables used in cluster launch (e.g. variables in `setup.sh`, `setup-slave.sh`, module scripts,...), 
+export them in a file called `ec2-user-variables.sh`, place it in `/some_path/root/spark-ec2/` and use `--deploy-root-dir` as above.
+
+For example, use this to define which modules to include (as well as their order, whether to test them, etc).  
 
 ## Details
 
