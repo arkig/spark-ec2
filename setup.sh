@@ -205,4 +205,9 @@ echo "Tachyon:       http://$MASTER:19999"
 echo "HDFS Namenode: http://$MASTER:50070"
 echo "Ganglia:       http://$MASTER:5080/ganglia"
 
+echo ""
+HDFS_NFS_MOUNT="/hdfs_nfs"
+echo "HDFS NFS Gateway: sudo mkdir -p $HDFS_NFS_MOUNT &&"
+echo "                  sudo mount -t nfs -o vers=3,proto=tcp,nolock,rsize=1048576,wsize=65536 $MASTER:/ $HDFS_NFS_MOUNT"
+
 echo -e "\n========== END spark-ec2/setup.sh on `hostname` =========="
