@@ -13,8 +13,18 @@ fi
 echo "spark://""`cat /root/spark-ec2/masters`"":7077" > /root/spark-ec2/cluster-url
 
 # Symlink the work directory to a local disk to avoid EBS volume filling up
-mkdir -p /mnt/spark/work
-ln -s /mnt/spark/work /root/spark/work
+#mkdir -p /mnt/spark/work
+#ln -s /mnt/spark/work /root/spark/work
+echo "Symlinking working directory to first instance volume on master..."
+LN_CMD="mkdir -p /mnt/spark/work && ln -s /mnt/spark/work /root/spark/work"
+eval "$LN_CMD"
+echo "Symlinking working directory to first instance volume on other cluster nodes..."
+for node in $SLAVES $OTHER_MASTERS; do
+  echo "... $node"
+  ssh -t $SSH_OPTS root@$node $LN_CMD
+done
+wait
+
 
 # The Spark master seems to take time to start and workers crash if
 # they start before the master. So start the master first, sleep and then start
