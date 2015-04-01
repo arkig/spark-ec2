@@ -36,13 +36,18 @@ then
   git fetch origin
   git checkout $git_hash
   export MAVEN_OPTS="-Xmx2g -XX:MaxPermSize=512M -XX:ReservedCodeCacheSize=512m"
-  # TODO mvn install ??
+  # mvn install ??
+
   OPTS="-Pnetlib-lgpl" #for BLAS optimisations
-  OPTS="$OPTS -Phadoop-provided" # need this??
-  # Note: this takes a over an hour on an m3.medium
+  # Note: -Phadoop-provided causes failure when starting spark
+  # Note: this takes a over an hour on an m3.medium, about 22 min on an m3.xlarge
   # TODO find way of selecting which modules to build, as we don't need all of them.
   mvn -Pyarn -P$HADOOP_PROFILE -Dhadoop.version=${HADOOP_VERSION} $OPTS -DskipTests clean package
   popd
+
+  # TODO check whether so in there... and try building with sbt as per:
+  #http://apache-spark-user-list.1001560.n3.nabble.com/MLLIB-usage-BLAS-dependency-warning-td18660.html
+
 
 # Pre-packaged spark version:
 else 

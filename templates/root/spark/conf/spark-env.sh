@@ -10,9 +10,12 @@ export SPARK_WORKER_CORES={{spark_worker_cores}}
 # No documentation that says we need this...
 export HADOOP_HOME="/root/ephemeral-hdfs"
 
-# Looks like this is required for eg: spark-example, spark-shell,
-# But can't find this documented.
-export MASTER=`cat /root/spark-ec2/cluster-url`
+# Note: cluster-url only (and only needs to) exist on master
+if [ -e "/root/spark-ec2/cluster-url" ]; then
+    # Looks like this is required for eg: spark-example, spark-shell,
+    # But can't find this documented.
+    export MASTER=$(cat /root/spark-ec2/cluster-url)
+fi
 
 export SPARK_MASTER_IP={{active_master}}
 
