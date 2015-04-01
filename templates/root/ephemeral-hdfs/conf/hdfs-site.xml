@@ -38,6 +38,12 @@
     <value>false</value>
   </property>
 
+  <!-- 1/4/2015 trying this to solve exception in nfs gateway logs -->
+  <property>
+    <name>dfs.permissions.superusergroup</name>
+    <value>supergroup</value>
+  </property>
+
   <property>
     <name>dfs.client.read.shortcircuit</name>
     <value>false</value>
