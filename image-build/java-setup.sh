@@ -2,7 +2,7 @@
 
 set -e
 set -x
-set -u
+# NOTE: set -u breaks this script.
 
 if [ -n "$(command -v java)" ]; then
     echo "Java appears to be installed. Cannot continue."
