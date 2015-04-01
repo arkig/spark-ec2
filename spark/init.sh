@@ -36,11 +36,12 @@ then
   git fetch origin
   git checkout $git_hash
   export MAVEN_OPTS="-Xmx2g -XX:MaxPermSize=512M -XX:ReservedCodeCacheSize=512m"
-  # TODO need -Phadoop-provided ??
   # TODO mvn install ??
+  OPTS="-Pnetlib-lgpl" #for BLAS optimisations
+  OPTS="$OPTS -Phadoop-provided" # need this??
   # Note: this takes a over an hour on an m3.medium
   # TODO find way of selecting which modules to build, as we don't need all of them.
-  mvn -Pyarn -P$HADOOP_PROFILE -Dhadoop.version=${HADOOP_VERSION} -DskipTests clean package
+  mvn -Pyarn -P$HADOOP_PROFILE -Dhadoop.version=${HADOOP_VERSION} $OPTS -DskipTests clean package
   popd
 
 # Pre-packaged spark version:
