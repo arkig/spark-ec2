@@ -27,9 +27,9 @@ Then call this script (you can call this script from any working directory and i
 ./build_spark_amis.sh
 ```
 
-You should expect it to take a couple of hours to complete. Check that the AMI is registered in your AWS account (for the region).  
+You should expect it to take a couple of hours to complete, depending on the instance type. Check that the AMI is registered in your AWS account (for the region).  
 
-Please note that the resulting image is likely not compatible with the configuration in the original `spark-ec2` scripts.
+Please note that the resulting image is almost certainly not compatible with the configuration in the original `spark-ec2` scripts.
 
 ## Generated AMIs
 
