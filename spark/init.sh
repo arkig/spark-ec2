@@ -11,13 +11,12 @@ fi
 #${HADOOP_VERSION:?}
 HADOOP_VERSION=${HADOOP_VERSION-"2.4.1"}
 
-if [ `python -c "print '$HADOOP_VERSION'.startswith('2.4')"` == "True" ]; then
+if [ `python -c "print '$HADOOP_VERSION'[0:3] in ['2.4','2.5','2.6']"` == "True" ]; then
   HADOOP_PROFILE="hadoop-2.4"
 else
   echo "Unknown hadoop profile. Exiting."
   return -1
 fi
-
 
 # Github tag:
 if [[ "$SPARK_VERSION" == *\|* ]]
