@@ -79,7 +79,26 @@ Example use cases: `setup.sh` is useful to copy data from s3 onto hdfs, while `r
 To override any variables used in cluster launch (e.g. variables in `setup.sh`, `setup-slave.sh`, module scripts,...), 
 export them in a file called `ec2-user-variables.sh`, place it in `/some_path/root/spark-ec2/` and use `--deploy-root-dir` as above.
 
-For example, use this to define which modules to include (as well as their order, whether to test them, etc).  
+For example, use this to define which modules to include (as well as their order, whether to test them, etc). Here is an example:  
+
+```
+
+    #!/bin/sh
+
+    export MODULES="spark
+    ephemeral-hdfs
+    hdfs-nfs-gateway
+    fuse-dfs
+    spark-standalone
+    tachyon
+    ganglia
+    rpms
+    extra"
+    export TEST_MODULES="ganglia
+    hdfs-nfs-gateway"
+    export VERBOSE=false
+
+```
 
 ## Details
 
