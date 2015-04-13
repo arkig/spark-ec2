@@ -13,15 +13,12 @@ source /root/.bash_profile
 # Load the cluster variables set by the deploy script
 source ec2-variables.sh
 
-# Always include 'scala' (first), 'rpms' and 'extra' modules (last)
-# if not defined as a work around for older versions spark_ec2.py.
-if [[ ! $MODULES =~ *scala* ]]; then
-  MODULES=$(printf "%s\n%s\n" "scala" $MODULES)
-fi
-if [[ ! $MODULES =~ *rpms* ]]; then
+# Always include 'rpms' and 'extra' modules (last) by default
+# since spark_ec2.py doesn't know about these and user may not be using ec2-user-variables.
+if [[ ! $MODULES =~ .*rpms.* ]]; then
   MODULES=$(printf "%s\n%s\n" $MODULES "rpms")
 fi
-if [[ ! $MODULES =~ *extra* ]]; then
+if [[ ! $MODULES =~ .*extra.* ]]; then
   MODULES=$(printf "%s\n%s\n" $MODULES "extra")
 fi
 
@@ -205,7 +202,7 @@ echo "Tachyon:       http://$MASTER:19999"
 echo "HDFS Namenode: http://$MASTER:50070"
 echo "Ganglia:       http://$MASTER:5080/ganglia"
 
-if [[ $SETUP_MODULES =~ *hdfs-nfs-gateway* ]]; then
+if [[ $SETUP_MODULES =~ .*hdfs-nfs-gateway.* ]]; then
     echo ""
     HDFS_NFS_MOUNT="/hdfs_nfs"  # Ideally would include cluster name, but that's not available here. TODO
     echo "Using the HDFS NFS Gateway from outside cluster:"
