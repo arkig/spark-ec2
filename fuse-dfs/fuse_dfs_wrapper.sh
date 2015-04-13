@@ -1,16 +1,22 @@
 #!/bin/sh
+#
+# Wrapper for fuse_dfs
 
 HADOOP_HOME=${HADOOP_HOME-"/root/hadoop"}
 HADOOP_EXTRA=${HADOOP_EXTRA-"/root/hadoop_extra"}
 
+# In particular for JAVA_HOME
+source ~/.bash_profile
+
 if [ "$HADOOP_PREFIX" != "" ]; then
     # Note that setting HADOOP_PREFIX means the results of hadoop classpath become relative to that.
+    # This breaks the CLASSPATH variable below.
     echo "Can't have HADOOP_PREFIX set!"
     exit 1
 fi
 
 if [ "$OS_ARCH" = "" ]; then
-    export OS_ARCH=amd64
+    OS_ARCH="amd64"
 fi
 
 if [ "$JAVA_HOME" = "" ]; then

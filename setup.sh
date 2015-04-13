@@ -205,12 +205,13 @@ echo "Tachyon:       http://$MASTER:19999"
 echo "HDFS Namenode: http://$MASTER:50070"
 echo "Ganglia:       http://$MASTER:5080/ganglia"
 
-if [[ $MODULES =~ *hdfs-nfs-gateway* ]]; then
+if [[ $SETUP_MODULES =~ *hdfs-nfs-gateway* ]]; then
     echo ""
     HDFS_NFS_MOUNT="/hdfs_nfs"  # Ideally would include cluster name, but that's not available here. TODO
-    echo "HDFS NFS Gateway: sudo mkdir -p $HDFS_NFS_MOUNT &&"
-    echo "                  sudo mount -t nfs -o vers=3,proto=tcp,nolock,rsize=1048576,wsize=65536,timeo=600 $MASTER:/ $HDFS_NFS_MOUNT"
-    echo "                  sudo umount -f $HDFS_NFS_MOUNT"
+    echo "Using the HDFS NFS Gateway from outside cluster:"
+    echo "    sudo mkdir -p $HDFS_NFS_MOUNT &&"
+    echo "    sudo mount -t nfs -o vers=3,proto=tcp,nolock,rsize=1048576,wsize=65536,timeo=600 $MASTER:/ $HDFS_NFS_MOUNT"
+    echo "    sudo umount -f $HDFS_NFS_MOUNT"
 fi
 
 echo -e "\n========== END spark-ec2/setup.sh on `hostname` =========="

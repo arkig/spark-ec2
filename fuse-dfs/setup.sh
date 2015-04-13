@@ -17,17 +17,25 @@ PORT="9000"
 
 DFS_MOUNT="/fuse_dfs"
 
+
+# To unmount and stop fuse_dfs:
+# sudo umount $DFS_MOUNT
+# TODO do this beforehand on all nodes in case it is aready running.
+
 # Note: rsize and wsize based on dfs.nfs.rtmax and dfs.nfs.wtmax hadoop properties
-MNT_CMD="sudo mkdir -p $DFS_MOUNT && /root/fuse-dfs/fuse_dfs_wrapper.sh dfs://$SERVER:$PORT $DFS_MOUNT"
+MNT_CMD="sudo mkdir -p $DFS_MOUNT && /root/spark-ec2/fuse-dfs/fuse_dfs_wrapper.sh dfs://$SERVER:$PORT $DFS_MOUNT"
 
-# TODO tail -n dump of syslog
+echo "syslog tail (fuse_dfs startup)..."
+tail -n20 /var/log/messages
+echo ""
 
-echo "Mounting HDFS using fuse_dfs (running on $SERVER) on master..."
+echo "Mounting HDFS using fuse_dfs on master..."
 eval "$MNT_CMD"
 
-echo "Mounting HDFS using fuse_dfs (running on $SERVER) on other cluster nodes..."
+echo "Mounting HDFS using fuse_dfs on other cluster nodes..."
 for node in $SLAVES $OTHER_MASTERS; do
   echo "... $node"
   ssh -t $SSH_OPTS root@$node "$MNT_CMD"
 done
 wait
+
