@@ -21,7 +21,7 @@ spark-ec2 modules:
 * Spark in standalone mode (yarn not yet enabled)
 * Tachyon
 * Hadoop DFS running on the instances' local disks.
-* HDFS NFS Gateway (including mounts on all nodes)
+* HDFS NFS Gateway running on MASTER (including mounts on all nodes)
 * Fuse DFS mounts on all nodes
 * Ganglia cluster monitoring
 
@@ -31,7 +31,7 @@ Generic modules for customisation:
 * [extra](./extra) - supports extra `init.sh`, `setup.sh`, `test.sh` and `run.sh` scripts by delegation (optional - for even greater flexibility)
 
 Spark, Tachyon, HDFS and Ganglia are configured to work together by these scripts. By default, they are pre-installed on the image in order to optimise cluster start time.
-The default versions are: `Spark 1.2`, `Tachyon 0.5`, `Protobuf 2.5.0` and `Hadoop 2.4.1 or 2.6.0`. These are *compiled from source against each other* to ensure compatibility and to get the 
+The default versions are: `Spark 1.2 or 1.3`, `Tachyon 0.5`, `Protobuf 2.5.0` and `Hadoop 2.4.1 or 2.6.0`. These are *compiled from source against each other* to ensure compatibility and to get the 
 native hadoop libraries. 
 You may change these versions or use pre-built distributions, but be aware of the dependencies between them and with the configuration files in [./templates](./templates).
 

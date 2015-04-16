@@ -4,18 +4,18 @@ pushd /root
 
 if [ -d "spark" ]; then
   echo "Spark seems to be installed. Exiting."
-  return
+  return 0
 fi
 
-# TODO ensure set
-#${HADOOP_VERSION:?}
-HADOOP_VERSION=${HADOOP_VERSION-"2.4.1"}
+# Ensure these are set
+echo "SPARK_VERSION=${SPARK_VERSION?}"
+echo "HADOOP_VERSION=${HADOOP_VERSION?}"
 
 if [ `python -c "print '$HADOOP_VERSION'[0:3] in ['2.4','2.5','2.6']"` == "True" ]; then
   HADOOP_PROFILE="hadoop-2.4"
 else
   echo "Unknown hadoop profile. Exiting."
-  return -1
+  return 1
 fi
 
 # Github tag:
@@ -23,6 +23,7 @@ if [[ "$SPARK_VERSION" == *\|* ]]
 then
 
   # TODO find way of specifying Tachyon version in build via command line... probably not possible until they make it a property in their build.
+  # TODO find way of selecting which modules to build, as we don't need all of them.
 
   repo=`python -c "print '$SPARK_VERSION'.split('|')[0]"`
   git_hash=`python -c "print '$SPARK_VERSION'.split('|')[1]"`
@@ -40,11 +41,10 @@ then
   OPTS="-Pnetlib-lgpl" #for BLAS optimisations
   # Note: -Phadoop-provided causes failure when starting spark
   # Note: this takes a over an hour on an m3.medium, about 22 min on an m3.xlarge
-  # TODO find way of selecting which modules to build, as we don't need all of them.
   mvn -Pyarn -P$HADOOP_PROFILE -Dhadoop.version=${HADOOP_VERSION} $OPTS -DskipTests clean package
   popd
 
-  # TODO check whether so in there... and try building with sbt as per:
+  # TODO re: BLAS - check whether so in there... and try building with sbt as per:
   #http://apache-spark-user-list.1001560.n3.nabble.com/MLLIB-usage-BLAS-dependency-warning-td18660.html
 
 

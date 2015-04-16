@@ -19,7 +19,7 @@ See/modify the following file to control software versions, as well as which mod
 image-variables.sh
 ```
 
-You may also need to alter `spark-packer-template.json`, for example to change the region.
+You may also need to alter `spark-packer-template.json`, for example to change the region and the base AMI used.
 
 Then call this script (you can call this script from any working directory and it will work):
 
